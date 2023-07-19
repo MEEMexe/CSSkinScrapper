@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using System.IO;
 using System.Text.Json;
-using System.Reflection;
 using System;
 
 namespace CSSkinScrapper
@@ -16,8 +15,8 @@ namespace CSSkinScrapper
 
         public JSONInterop()
         {
-            exeDirPath = Assembly.GetExecutingAssembly().Location;
-            exeDirPath = exeDirPath.Replace("CSSkinScrapper.dll", "");
+            exeDirPath = AppDomain.CurrentDomain.BaseDirectory;
+            exeDirPath = exeDirPath.Replace("CSSkinScrapper.exe", "");
             jsonPath = exeDirPath + "ScrapperSettings.json";
         }
 
