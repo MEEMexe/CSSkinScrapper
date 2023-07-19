@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.Office.Interop.Excel;
+using System;
+using System.Diagnostics;
+using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -31,6 +34,10 @@ namespace CSSkinScrapper
             }
 
             ExcelInterop.WriteExcel(priceArray);
+
+            //Wait for Excel Process to finalize
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
         }
 
         static async Task<string> GetPrice(string skinpath)
