@@ -15,7 +15,5 @@
             { "Momentum", "UMP-45%20%7C%20Momentum%20%28Field-Tested%29" },
             { "Vogue", "Glock-18%20%7C%20Vogue%20%28Field-Tested%29" }
         };
-
-        public static int skinCount = skins.GetLength(0);
     }
 }
