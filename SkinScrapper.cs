@@ -28,7 +28,7 @@ namespace CSSkinScrapper
                 Console.WriteLine(skinname + form + price);
             }
 
-            ExcelInterop.WriteExcel(priceArray);
+            new ExcelInterop().WriteExcel(priceArray);
         }
 
         public static async Task<string> GetPrice(string skinpath)
