@@ -13,7 +13,7 @@ namespace CSSkinScrapper
             excelApp = new Application();
         }
 
-        public void WriteExcel(string[,] skinarray)
+        public void WriteExcel(string[] skinarray)
         {
             CheckForFile();
 
