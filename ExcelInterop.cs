@@ -6,14 +6,15 @@ namespace CSSkinScrapper
     internal class ExcelInterop
     {
         private Application excelApp;
-        private static string path = "C:\\Users\\nikla\\Desktop\\CS-Skins\\CSGO-Skins.xlsx";
+        private string path;
 
-        public ExcelInterop()
+        public ExcelInterop(string _path)
         {
+            path = _path + "CSGO-Skins.xlsx";
             excelApp = new Application();
         }
 
-        public void WriteExcel(string[] skinarray)
+        public void WriteExcel(string[,] skinarray)
         {
             CheckForFile();
 

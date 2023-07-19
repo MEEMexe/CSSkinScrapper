@@ -16,15 +16,23 @@ namespace CSSkinScrapper
         static void CompleteTask()
         {
             //Load user settings
-            //SaveFile saveFile = JSONInterop.Load();
+            JSONInterop jsonInterop = new JSONInterop();
+            SaveFile saveFile = jsonInterop.Load().GetAwaiter().GetResult();
 
             //get newest prices
             Console.WriteLine("Getting Prices:");
-            string[] prices = SkinScrapper.GetPriceArray(Skins.skins);
+            string[,] prices = SkinScrapper.GetPriceArray(saveFile.skinNames, saveFile.skinApiNames);
 
             //Write to excel
             Console.WriteLine("\nWriting to Excelsheet...");
-            new ExcelInterop().WriteExcel(prices);
+            new ExcelInterop(saveFile.filePath).WriteExcel(prices);
+
+            //
+        }
+
+        public static void NewSkin(ref SaveFile saveFile)
+        {
+            
         }
     }
 }

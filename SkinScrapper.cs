@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -9,21 +10,21 @@ namespace CSSkinScrapper
         private static string baseUrl = "http://steamcommunity.com/market/priceoverview/?currency=3&appid=730&market_hash_name=";
         private static HttpClient client = new HttpClient();
 
-        public static string[] GetPriceArray(string[,] skins)
+        public static string[,] GetPriceArray(List<string> skinNames, List<string> skinApiNames)
         {
-            int skinCount = skins.GetLength(0);
-            string[] priceArray = new string[skinCount];
+            int skinCount = skinNames.Count;
+            string[,] priceArray = new string[skinCount, 1];
 
             for (int i = 0; i < skinCount; i++)
             {
                 string form = " price:\t";
-                string skinname = skins[i, 0];
-                string price = GetPrice(skins[i, 1]).GetAwaiter().GetResult();
+                string skinname = skinNames[i];
+                string price = GetPrice(skinApiNames[i]).GetAwaiter().GetResult();
 
                 if (skinname.Length < 9)
                     form += "\t";
 
-                priceArray[i] = price;
+                priceArray[i, 0] = price;
 
                 Console.WriteLine(skinname + form + price);
             }
