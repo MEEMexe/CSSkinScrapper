@@ -50,7 +50,9 @@ namespace CSSkinScrapper
                 StreamReader sr = new StreamReader(jsonPath);
                 string json = sr.ReadToEnd();
                 sr.Close();
-                return JsonSerializer.Deserialize<SaveFile>(json, serializerOptions);
+                SaveFile s = JsonSerializer.Deserialize<SaveFile>(json, serializerOptions);
+                s.runCount++;
+                return s;
             }
         }
     }

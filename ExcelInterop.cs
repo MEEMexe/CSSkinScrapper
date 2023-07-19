@@ -1,4 +1,5 @@
 ﻿using Microsoft.Office.Interop.Excel;
+using System.Drawing;
 using System.IO;
 
 namespace CSSkinScrapper
@@ -23,36 +24,24 @@ namespace CSSkinScrapper
 
         public void WriteForm(SaveFile saveFile)
         {
-            int count = saveFile.skinCount;
-
-            workSheet.Cells[2, 2] = "Skin:";
-
-            for(int i = 0; i < count; i++)
-            {
-                workSheet.Cells[i + 3, 2] = saveFile.skinNames[i];
-                workSheet.Cells[i + 3, 4] = saveFile.skinBuyPrice[i];
-                
-            }
-
-
-
-            workSheet.get_Range("B2", "B" + count + 1).Font.Bold = true;
-            
+            Range workRange = workSheet.Cells[2, 2];
+            workRange.Value = "Skins:";
+            workRange.Font.Size = 16;
+            workRange.Font.Bold = true;
+            workRange.Interior.Color = ColorTranslator.ToOle(Color.AliceBlue);
 
         }
 
-        public void WriteData(string[,] skinarray)
-        {          
-            int skinCount = skinarray.GetLength(0) + 2;
+        public void WriteData(string[,] skinPriceArray)
+        {
 
-            workSheet.get_Range("G2", "G" + skinCount).Value2 = skinarray;
+        }
 
-            Range oRng = workSheet.get_Range("H2", "H" + skinCount);
-            oRng.Formula = "=G2 - D2";
-            oRng.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Red);
-
+        ~ExcelInterop()
+        {
             workBook.Save();
             workBook.Close();
+            System.Console.ReadKey();
         }
     }
 }
