@@ -35,7 +35,6 @@ namespace CSSkinScrapper
 
                 SaveFile newSave = new SaveFile()
                 {
-                    skinCount = 0,
                     filePath = exeDirPath
                 };
 
@@ -58,6 +57,7 @@ namespace CSSkinScrapper
 
     public class SaveFile
     {
+        public int runCount {  get; set; }
         public int skinCount { get; set; }
         public string filePath { get; set; }
         public List<string> skinNames { get; set; }
@@ -66,6 +66,7 @@ namespace CSSkinScrapper
 
         public SaveFile()
         {
+            runCount = 0;
             skinCount = 0;
             filePath = "";
             skinNames = new List<string>();

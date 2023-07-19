@@ -6,6 +6,15 @@ namespace CSSkinScrapper
     {
         static void Main(string[] args)
         {
+            ScopeToTriggerGC();
+
+            //Wait for Excel Process to finalize
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+        }
+
+        static void ScopeToTriggerGC()
+        {
             //Load user settings
             JSONInterop jsonInterop = new JSONInterop();
             SaveFile saveFile = jsonInterop.Load().GetAwaiter().GetResult();
@@ -30,11 +39,10 @@ namespace CSSkinScrapper
 
             //Write to excel
             Console.WriteLine("\nWriting to Excelsheet...");
-            new ExcelInterop(saveFile.filePath).WriteExcel(prices);
+            ExcelInterop exelInterop = new ExcelInterop(saveFile.filePath);
 
-            //Wait for Excel Process to finalize
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
+            exelInterop.WriteForm(saveFile);
+            exelInterop.WriteData(prices);
         }
     }
 }
