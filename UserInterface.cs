@@ -34,7 +34,7 @@ namespace CSSkinScrapper
             saveFile.skinCount++;
             saveFile.skinApiNames.Add(apiSkin);
             saveFile.skinNames.Add(skinName);
-            //saveFile.skinBuyPrice.Add(price);
+            saveFile.skinBuyPrice.Add(price);
 
             Console.WriteLine(skinName);
 
