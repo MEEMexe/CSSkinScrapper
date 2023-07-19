@@ -12,7 +12,7 @@ namespace CSSkinScrapper
         {
             NewSkinRecursive(ref saveFile);
             Console.WriteLine("\nSaving json file.");
-            jsonInterop.Save(saveFile);
+            jsonInterop.Save(saveFile).GetAwaiter().GetResult();
         }
 
         private static void NewSkinRecursive(ref SaveFile saveFile)
@@ -31,9 +31,10 @@ namespace CSSkinScrapper
             Console.WriteLine($"How much did the {skinName} cost?");
             string price = Console.ReadLine();
 
+            saveFile.skinCount++;
             saveFile.skinApiNames.Add(apiSkin);
             saveFile.skinNames.Add(skinName);
-            saveFile.skinBuyPrice.Add(price);
+            //saveFile.skinBuyPrice.Add(price);
 
             Console.WriteLine(skinName);
 

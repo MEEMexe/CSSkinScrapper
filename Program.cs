@@ -11,9 +11,18 @@ namespace CSSkinScrapper
             SaveFile saveFile = jsonInterop.Load().GetAwaiter().GetResult();
 
             //new skins?
-            Console.WriteLine("Do you want to add new skins [n] or just scan for prices [s]?");
-            if (Console.ReadLine() == "n")
-                UserInterface.NewSkin(ref saveFile, ref jsonInterop);    
+            if (saveFile.skinCount == 0)
+            {
+                UserInterface.NewSkin(ref saveFile, ref jsonInterop);
+            }
+            else
+            {
+                Console.WriteLine("Do you want to add new skins [n] or just scan for prices [s]?");
+                if (Console.ReadLine() == "n")
+                {
+                    UserInterface.NewSkin(ref saveFile, ref jsonInterop);
+                }
+            }
 
             //get newest prices
             Console.WriteLine("\nGetting Prices:");
