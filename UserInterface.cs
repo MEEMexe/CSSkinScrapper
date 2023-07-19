@@ -22,7 +22,7 @@ namespace CSSkinScrapper
             int lenght = end - start - 9;
 
             string skinName = apiSkin.Substring(start + 9, lenght);
-            skinName.Replace("%20", " ");
+            skinName = skinName.Replace("%20", " ");
 
             Console.WriteLine($"How much did the {skinName} cost?");
             string price = Console.ReadLine();
