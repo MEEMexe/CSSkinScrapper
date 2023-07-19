@@ -6,33 +6,26 @@ namespace CSSkinScrapper
     {
         static void Main(string[] args)
         {
-            CompleteTask();
-
-            //Wait for Excel Process to finalize
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-        }
-
-        static void CompleteTask()
-        {
             //Load user settings
             JSONInterop jsonInterop = new JSONInterop();
             SaveFile saveFile = jsonInterop.Load().GetAwaiter().GetResult();
 
+            //new skins?
+            Console.WriteLine("Do you want to add new skins [n] or just scan for prices [s]?");
+            if (Console.ReadLine() == "n")
+                UserInterface.NewSkin(ref saveFile, ref jsonInterop);    
+
             //get newest prices
-            Console.WriteLine("Getting Prices:");
+            Console.WriteLine("\nGetting Prices:");
             string[,] prices = SkinScrapper.GetPriceArray(saveFile.skinNames, saveFile.skinApiNames);
 
             //Write to excel
             Console.WriteLine("\nWriting to Excelsheet...");
             new ExcelInterop(saveFile.filePath).WriteExcel(prices);
 
-            //
-        }
-
-        public static void NewSkin(ref SaveFile saveFile)
-        {
-            
+            //Wait for Excel Process to finalize
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
         }
     }
 }

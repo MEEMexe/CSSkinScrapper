@@ -26,6 +26,7 @@ namespace CSSkinScrapper
             string json = JsonSerializer.Serialize(objectToSave, serializerOptions);
             await using FileStream saveFile = File.OpenWrite(jsonPath);
             await JsonSerializer.SerializeAsync(saveFile, json, serializerOptions);
+            saveFile.Close();
         }
 
         public async Task<SaveFile> Load()
@@ -40,11 +41,9 @@ namespace CSSkinScrapper
                     filePath = exeDirPath
                 };
 
-                Program.NewSkin(ref newSave);
-
                 await using FileStream newFile = File.Create(jsonPath);
                 await JsonSerializer.SerializeAsync(newFile, newSave, serializerOptions);
-
+                newFile.Close();
                 return newSave;
             }
             else
@@ -53,6 +52,7 @@ namespace CSSkinScrapper
 
                 StreamReader sr = new StreamReader(jsonPath);
                 string json = sr.ReadToEnd();
+                sr.Close();
                 return JsonSerializer.Deserialize<SaveFile>(json);
             }
         }
@@ -64,11 +64,15 @@ namespace CSSkinScrapper
         public string filePath { get; set; }
         public List<string> skinNames { get; set; }
         public List<string> skinApiNames { get; set; }
+        public List<string> skinBuyPrice { get;set; }
 
         public SaveFile()
         {
+            skinCount = 0;
+            filePath = "";
             skinNames = new List<string>();
             skinApiNames = new List<string>();
+            skinBuyPrice = new List<string>();
         }
     }
 }
