@@ -47,6 +47,7 @@ namespace CSSkinScrapper
 
             int i = responseString.IndexOf("lowest_price");
             string price = responseString.Substring(i + 15, 4);
+            price = price.Replace("-", "0");
 
             return price;
         }
