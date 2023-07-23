@@ -15,6 +15,8 @@ namespace CSSkinScrapper
 
         static void ScopeToTriggerGC()
         {
+            bool newSkin = false;
+
             //Load user settings
             JSONInterop jsonInterop = new JSONInterop();
             SaveFile saveFile = jsonInterop.Load().GetAwaiter().GetResult();
@@ -23,6 +25,7 @@ namespace CSSkinScrapper
             if (saveFile.skinCount == 0)
             {
                 UserInterface.NewSkin(ref saveFile, ref jsonInterop);
+                newSkin = true;
             }
             else
             {
@@ -30,6 +33,7 @@ namespace CSSkinScrapper
                 if (Console.ReadLine() == "n")
                 {
                     UserInterface.NewSkin(ref saveFile, ref jsonInterop);
+                    newSkin = true;
                 }
             }
 
@@ -41,8 +45,9 @@ namespace CSSkinScrapper
             Console.WriteLine("\nWriting to Excelsheet...");
             ExcelInterop exelInterop = new ExcelInterop(saveFile.filePath);
 
-            exelInterop.WriteForm(saveFile);
-            exelInterop.WriteData(prices);
+            newSkin = true;
+            if (newSkin) { exelInterop.WriteForm(saveFile); }
+            exelInterop.WritePrices(prices);
         }
     }
 }

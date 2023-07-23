@@ -15,7 +15,7 @@ namespace CSSkinScrapper
         {
             Tutorial();
             Console.WriteLine("Enter SkinApiName:");
-            string apiSkin = Console.ReadLine();
+            string? apiSkin = Console.ReadLine();
 
             int start = apiSkin.IndexOf("%20%7C%20");
             int end = apiSkin.IndexOf("%20%28");
@@ -25,7 +25,7 @@ namespace CSSkinScrapper
             skinName = skinName.Replace("%20", " ");
 
             Console.WriteLine($"How much did the {skinName} cost?");
-            string price = Console.ReadLine();
+            string? price = Console.ReadLine();
 
             saveFile.skinCount++;
             saveFile.skinApiNames.Add(apiSkin);
@@ -42,7 +42,7 @@ namespace CSSkinScrapper
         private static void Tutorial()
         {
             Console.WriteLine("Show how to add skins? [y] yes/[n] no");
-            string yesno = Console.ReadLine();
+            string? yesno = Console.ReadLine();
 
             if (yesno == "y")
             {

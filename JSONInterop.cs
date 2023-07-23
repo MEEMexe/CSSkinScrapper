@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System;
 using System.IO;
 using System.Text.Json;
-using System;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace CSSkinScrapper
 {
@@ -50,7 +50,7 @@ namespace CSSkinScrapper
                 StreamReader sr = new StreamReader(jsonPath);
                 string json = sr.ReadToEnd();
                 sr.Close();
-                SaveFile s = JsonSerializer.Deserialize<SaveFile>(json, serializerOptions);
+                SaveFile? s = JsonSerializer.Deserialize<SaveFile>(json, serializerOptions);
                 s.runCount++;
                 return s;
             }
