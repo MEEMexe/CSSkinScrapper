@@ -52,6 +52,7 @@ namespace CSSkinScrapper
                 sr.Close();
                 SaveFile? s = JsonSerializer.Deserialize<SaveFile>(json, serializerOptions);
                 s.runCount++;
+                await Save(s);
                 return s;
             }
         }

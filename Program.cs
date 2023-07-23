@@ -43,10 +43,10 @@ namespace CSSkinScrapper
 
             //Write to excel
             Console.WriteLine("\nWriting to Excelsheet...");
-            ExcelInterop exelInterop = new ExcelInterop(saveFile.filePath);
+            ExcelInterop exelInterop = new ExcelInterop(saveFile);
 
             newSkin = true;
-            if (newSkin) { exelInterop.WriteForm(saveFile); }
+            if (newSkin) { exelInterop.WriteForm(); }
             exelInterop.WritePrices(prices);
         }
     }

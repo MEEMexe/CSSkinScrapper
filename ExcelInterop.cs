@@ -1,19 +1,23 @@
 ﻿using Microsoft.Office.Interop.Excel;
+using Range = Microsoft.Office.Interop.Excel.Range;
 using System.Drawing;
 using System.IO;
+using System;
 
 namespace CSSkinScrapper
 {
     internal class ExcelInterop
     {
+        private SaveFile saveFile;
         private string path;
         private Workbook workBook;
         private Worksheet workSheet;
         private Range wr;
 
-        public ExcelInterop(string _path)
+        public ExcelInterop(SaveFile _saveFile)
         {
-            path = _path + "CSGO-Skins.xlsx";
+            saveFile = _saveFile;
+            path = saveFile.filePath + "CSGO-Skins.xlsx";
             bool existed = File.Exists(path);
 
             Application excelApp = new Application();
@@ -30,7 +34,7 @@ namespace CSSkinScrapper
             wr = workSheet.Cells[1, 1];
         }
 
-        public void WriteForm(SaveFile saveFile)
+        public void WriteForm()
         {
             //schreiben von skinnamen und kaufpreisen
             int skinCount = saveFile.skinCount;
@@ -65,18 +69,45 @@ namespace CSSkinScrapper
         public void WritePrices(string[,] skinPriceArray)
         {
             //aktuelle preise in "aktuell" spalte schreiben
-            int skinCount = skinPriceArray.GetLength(0);
+            WriteSinglePriceArray(skinPriceArray, 7);
 
-            for (int i = 0; i < skinCount; i++)
+            //verlauf schreiben
+            int colum = 3 * saveFile.runCount + 7;
+            wr = workSheet.Cells[2, colum];
+            DateTime date = DateTime.Today;
+            wr.Value = date;
+            wr.Font.Size = 16;
+            wr.Font.Bold = true;
+            wr.Interior.Color = ColorTranslator.ToOle(Color.CornflowerBlue);
+            WriteWinLoose(colum);
+
+            wr = workSheet.Cells[4, colum];
+            string valueAddress = wr.get_Address(XlReferenceStyle.xlR1C1);
+            valueAddress = valueAddress.Replace("$", null);
+            valueAddress = valueAddress.Replace("4", null);
+            wr = workSheet.Cells[4, colum + 1];
+            string address = wr.get_Address(XlReferenceStyle.xlR1C1);
+            address = address.Replace("$", null);
+            address = address.Replace("4", null);
+            wr = workSheet.get_Range(address + 4, address + (saveFile.skinCount + 3));
+            wr.Formula = $"={valueAddress + 4} - $D4";
+            wr.Font.Size = 16;
+
+            WriteSinglePriceArray(skinPriceArray, colum);
+        }
+
+        private void WriteSinglePriceArray(string[,] skinPriceArray, int colum)
+        {
+            for (int i = 0; i < saveFile.skinCount; i++)
             {
-                wr = workSheet.Cells[i + 4, 7];
+                wr = workSheet.Cells[i + 4, colum];
                 wr.Value = skinPriceArray[i, 0];
                 wr.Font.Size = 16;
                 wr.Interior.Color = ColorTranslator.ToOle(Color.FromArgb(255, 217, 102));
                 wr.Font.Color = ColorTranslator.ToOle(Color.FromArgb(156, 87, 0));
 
                 //rendite färben
-                wr = workSheet.Cells[i + 4, 8];
+                wr = workSheet.Cells[i + 4, colum + 1];
                 double win = wr.Cells.Value;
                 if (win > 0)
                 {
@@ -114,12 +145,17 @@ namespace CSSkinScrapper
             wr.Font.Bold = true;
             wr.Interior.Color = ColorTranslator.ToOle(Color.CornflowerBlue);
 
-            wr = workSheet.Cells[3, 7];
+            WriteWinLoose(7);
+        }
+
+        private void WriteWinLoose(int colum)
+        {
+            wr = workSheet.Cells[3, colum];
             wr.Value = "Preis:";
             wr.Font.Size = 14;
             wr.Interior.Color = ColorTranslator.ToOle(Color.FromArgb(180, 198, 231));
 
-            wr = workSheet.Cells[3, 8];
+            wr = workSheet.Cells[3, colum + 1];
             wr.Value = "Rendite:";
             wr.Font.Size = 14;
             wr.Interior.Color = ColorTranslator.ToOle(Color.FromArgb(180, 198, 231));
