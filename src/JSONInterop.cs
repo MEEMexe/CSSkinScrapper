@@ -65,7 +65,7 @@ namespace CSSkinScrapper
         public string filePath { get; set; }
         public List<string> skinNames { get; set; }
         public List<string> skinApiNames { get; set; }
-        public List<string> skinBuyPrice { get;set; }
+        public List<double> skinBuyPrice { get;set; }
 
         public SaveFile()
         {
@@ -74,7 +74,7 @@ namespace CSSkinScrapper
             filePath = "";
             skinNames = new List<string>();
             skinApiNames = new List<string>();
-            skinBuyPrice = new List<string>();
+            skinBuyPrice = new List<double>();
         }
     }
 }

@@ -25,14 +25,12 @@ namespace CSSkinScrapper
             skinName = skinName.Replace("%20", " ");
 
             Console.WriteLine($"How much did the {skinName} cost?");
-            string? price = Console.ReadLine();
+            double price = double.Parse(Console.ReadLine());
 
             saveFile.skinCount++;
             saveFile.skinApiNames.Add(apiSkin);
             saveFile.skinNames.Add(skinName);
             saveFile.skinBuyPrice.Add(price);
-
-            Console.WriteLine(skinName);
 
             Console.WriteLine("Do you want to add another skin? [y] yes/[n] no");
             if (Console.ReadLine() == "y")
