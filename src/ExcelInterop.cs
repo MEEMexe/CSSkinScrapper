@@ -42,6 +42,7 @@ namespace CSSkinScrapper
             //write skinnames and purchase price
             int skinCount = saveFile.skinCount;
 
+
             for (int i = 0; i < skinCount; i++)
             {
                 wr = workSheet.Cells[i + 4, 2];
@@ -69,7 +70,7 @@ namespace CSSkinScrapper
             wr.Font.Size = 16;
         }
 
-        public void WritePrices(string[,] skinPriceArray)
+        public void WritePrices(double[,] skinPriceArray)
         {
             int colum = 3 * saveFile.runCount + 7;
 
@@ -82,7 +83,7 @@ namespace CSSkinScrapper
             {
                 wr = workSheet.Cells[i + 4, colum + 1];
                 wr.Font.Size = 16;
-                wr.Value = (double.Parse(skinPriceArray[i, 0]) - saveFile.skinBuyPrice[i]);
+                wr.Value = (skinPriceArray[i, 0] - saveFile.skinBuyPrice[i]);
             }    
             WriteSinglePriceArray(skinPriceArray, colum);
         }
@@ -98,7 +99,7 @@ namespace CSSkinScrapper
             WriteWinLoose(colum);
         }
 
-        private void WriteSinglePriceArray(string[,] skinPriceArray, int colum)
+        private void WriteSinglePriceArray(double[,] skinPriceArray, int colum)
         {
             double d = 0;
 

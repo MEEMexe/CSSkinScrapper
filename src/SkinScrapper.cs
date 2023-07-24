@@ -10,16 +10,16 @@ namespace CSSkinScrapper
         private static string baseUrl = "http://steamcommunity.com/market/priceoverview/?currency=3&appid=730&market_hash_name=";
         private static HttpClient client = new HttpClient();
 
-        public static string[,] GetPriceArray(List<string> skinNames, List<string> skinApiNames)
+        public static double[,] GetPriceArray(List<string> skinNames, List<string> skinApiNames)
         {
             int skinCount = skinNames.Count;
-            string[,] priceArray = new string[skinCount, 1];
+            double[,] priceArray = new double[skinCount, 1];
 
             for (int i = 0; i < skinCount; i++)
             {
                 string form = " price:\t";
                 string skinname = skinNames[i];
-                string price = GetPrice(skinApiNames[i]).GetAwaiter().GetResult();
+                double price = GetPrice(skinApiNames[i]).GetAwaiter().GetResult();
 
                 if (skinname.Length < 9)
                     form += "\t";
@@ -32,7 +32,7 @@ namespace CSSkinScrapper
             return priceArray;
         }
 
-        public static async Task<string> GetPrice(string skinpath)
+        public static async Task<double> GetPrice(string skinpath)
         {
             string requestUrl = baseUrl + skinpath;
 
@@ -46,10 +46,12 @@ namespace CSSkinScrapper
             string responseString = await response.Content.ReadAsStringAsync();
 
             int i = responseString.IndexOf("lowest_price");
-            string price = responseString.Substring(i + 15, 4);
-            price = price.Replace("-", "0");
+            string priceString = responseString.Substring(i + 15, 4);
+            priceString = priceString.Replace("-", "0");
 
+            double price = double.Parse(priceString);
             //TODO: subtract steam market fee
+
 
             return price;
         }
