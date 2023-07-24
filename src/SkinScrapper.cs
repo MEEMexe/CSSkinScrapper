@@ -49,6 +49,8 @@ namespace CSSkinScrapper
             string price = responseString.Substring(i + 15, 4);
             price = price.Replace("-", "0");
 
+            //TODO: subtract steam market fee
+
             return price;
         }
     }
