@@ -39,13 +39,13 @@ namespace CSSkinScrapper
 
             //get newest prices
             Console.WriteLine("\nGetting Prices:");
-            double[,] prices = SkinScrapper.GetPriceArray(saveFile.skinNames, saveFile.skinApiNames);
+            double[] prices = SkinScrapper.GetPriceArray(saveFile.skinNames, saveFile.skinApiNames);
 
             //Write to excel
             Console.WriteLine("\nWriting to Excelsheet...");
             ExcelInterop exelInterop = new ExcelInterop(saveFile);
-            if (true)
-                exelInterop.WriteForm();
+            if (newSkin)
+                exelInterop.SkinForm(false);
             exelInterop.WritePrices(prices);
         }
     }

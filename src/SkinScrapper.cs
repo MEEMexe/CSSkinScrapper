@@ -10,10 +10,10 @@ namespace CSSkinScrapper
         private static string baseUrl = "http://steamcommunity.com/market/priceoverview/?currency=3&appid=730&market_hash_name=";
         private static HttpClient client = new HttpClient();
 
-        public static double[,] GetPriceArray(List<string> skinNames, List<string> skinApiNames)
+        public static double[] GetPriceArray(List<string> skinNames, List<string> skinApiNames)
         {
             int skinCount = skinNames.Count;
-            double[,] priceArray = new double[skinCount, 1];
+            double[] priceArray = new double[skinCount];
 
             for (int i = 0; i < skinCount; i++)
             {
@@ -24,7 +24,7 @@ namespace CSSkinScrapper
                 if (skinname.Length < 9)
                     form += "\t";
 
-                priceArray[i, 0] = price;
+                priceArray[i] = price;
 
                 Console.WriteLine(skinname + form + price);
             }
