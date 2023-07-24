@@ -50,14 +50,14 @@ namespace CSSkinScrapper
             //Namen formatieren
             wr = workSheet.get_Range("B4", "C" + (skinCount + 3));
             wr.Font.Size = 16;
-            wr.Interior.Color = ColorTranslator.ToOle(Color.FromArgb(180, 198, 231));
+            wr.Interior.Color = ExcelColors.LightBlue;
             //wr.Cells.Borders.LineStyle = XlLineStyle.xlContinuous;
 
             //kaufpreise formatieren
             wr = workSheet.get_Range("D4", "D" + (skinCount + 3));
             wr.Font.Size = 16;
-            wr.Interior.Color = ColorTranslator.ToOle(Color.FromArgb(255, 235, 156));
-            wr.Font.Color = ColorTranslator.ToOle(Color.FromArgb(156, 87, 0));
+            wr.Interior.Color = ExcelColors.LightYellow;
+            wr.Font.Color = ExcelColors.DarkerYellow;
             //wr.Cells.Borders.LineStyle = XlLineStyle.xlContinuous;
 
             //aktuelle rechnung
@@ -78,7 +78,7 @@ namespace CSSkinScrapper
             wr.Value = date;
             wr.Font.Size = 16;
             wr.Font.Bold = true;
-            wr.Interior.Color = ColorTranslator.ToOle(Color.CornflowerBlue);
+            wr.Interior.Color = ExcelColors.DarkerBlue;
             WriteWinLoose(colum);
 
             wr = workSheet.Cells[4, colum];
@@ -103,21 +103,21 @@ namespace CSSkinScrapper
                 wr = workSheet.Cells[i + 4, colum];
                 wr.Value = skinPriceArray[i, 0];
                 wr.Font.Size = 16;
-                wr.Interior.Color = ColorTranslator.ToOle(Color.FromArgb(255, 217, 102));
-                wr.Font.Color = ColorTranslator.ToOle(Color.FromArgb(156, 87, 0));
+                wr.Interior.Color = ExcelColors.Yellow;
+                wr.Font.Color = ExcelColors.DarkerYellow;
 
                 //rendite färben
                 wr = workSheet.Cells[i + 4, colum + 1];
                 double win = wr.Cells.Value;
                 if (win > 0)
                 {
-                    wr.Interior.Color = ColorTranslator.ToOle(Color.FromArgb(198, 239, 206));
-                    wr.Font.Color = ColorTranslator.ToOle(Color.FromArgb(0, 97, 0));
+                    wr.Interior.Color = ExcelColors.LightGreen;
+                    wr.Font.Color = ExcelColors.DarkerGreen;
                 }
                 else
                 {
-                    wr.Interior.Color = ColorTranslator.ToOle(Color.FromArgb(255, 199, 206));
-                    wr.Font.Color = ColorTranslator.ToOle(Color.FromArgb(156, 0, 6));
+                    wr.Interior.Color = ExcelColors.LightRed;
+                    wr.Font.Color = ExcelColors.DarkerRed;
                 }
             }
         }
@@ -129,21 +129,21 @@ namespace CSSkinScrapper
             wr.Value = "Skins:";
             wr.Font.Size = 16;
             wr.Font.Bold = true;
-            wr.Interior.Color = ColorTranslator.ToOle(Color.CornflowerBlue);
+            wr.Interior.Color = ExcelColors.DarkerBlue;
 
             wr = workSheet.Cells[2, 4];
             wr.Value = "Kaufpreise:";
             wr.Font.Size = 16;
             wr.Font.Bold = true;
-            wr.Interior.Color = ColorTranslator.ToOle(Color.CornflowerBlue);
+            wr.Interior.Color = ExcelColors.DarkerBlue;
             wr = workSheet.Cells[2, 5];
-            wr.Interior.Color = ColorTranslator.ToOle(Color.CornflowerBlue);
+            wr.Interior.Color = ExcelColors.DarkerBlue;
 
             wr = workSheet.Cells[2, 7];
             wr.Value = "Aktuell:";
             wr.Font.Size = 16;
             wr.Font.Bold = true;
-            wr.Interior.Color = ColorTranslator.ToOle(Color.CornflowerBlue);
+            wr.Interior.Color = ExcelColors.DarkerBlue;
 
             WriteWinLoose(7);
         }
@@ -153,12 +153,12 @@ namespace CSSkinScrapper
             wr = workSheet.Cells[3, colum];
             wr.Value = "Preis:";
             wr.Font.Size = 14;
-            wr.Interior.Color = ColorTranslator.ToOle(Color.FromArgb(180, 198, 231));
+            wr.Interior.Color = ExcelColors.LightBlue;
 
             wr = workSheet.Cells[3, colum + 1];
             wr.Value = "Rendite:";
             wr.Font.Size = 14;
-            wr.Interior.Color = ColorTranslator.ToOle(Color.FromArgb(180, 198, 231));
+            wr.Interior.Color = ExcelColors.LightBlue;
         }
 
         ~ExcelInterop()
@@ -166,5 +166,18 @@ namespace CSSkinScrapper
             workBook.Save();
             workBook.Close();
         }
+    }
+
+    internal static class ExcelColors
+    {
+        public static int LightBlue = ColorTranslator.ToOle(Color.FromArgb(180, 198, 231));
+        public static int DarkerBlue = ColorTranslator.ToOle(Color.CornflowerBlue);
+        public static int LightGreen = ColorTranslator.ToOle(Color.FromArgb(198, 239, 206));
+        public static int DarkerGreen = ColorTranslator.ToOle(Color.FromArgb(0, 97, 0));
+        public static int LightRed = ColorTranslator.ToOle(Color.FromArgb(255, 199, 206));
+        public static int DarkerRed = ColorTranslator.ToOle(Color.FromArgb(156, 0, 6));
+        public static int LightYellow = ColorTranslator.ToOle(Color.FromArgb(255, 235, 156));
+        public static int Yellow = ColorTranslator.ToOle(Color.FromArgb(255, 217, 102));
+        public static int DarkerYellow = ColorTranslator.ToOle(Color.FromArgb(156, 87, 0));
     }
 }
