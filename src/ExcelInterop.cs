@@ -1,5 +1,5 @@
-﻿using Microsoft.Office.Interop.Excel;
-using Range = Microsoft.Office.Interop.Excel.Range;
+﻿using Range = Microsoft.Office.Interop.Excel.Range;
+using Microsoft.Office.Interop.Excel;
 using System.Drawing;
 using System.IO;
 using System;
@@ -96,6 +96,7 @@ namespace CSSkinScrapper
             //write SCHLUSS
             wr = workSheet.Cells[saveFile.skinCount + 6, 2];
             wr.Font.Size = 16;
+            wr.Interior.Color = ExcelColors.LightBlue;
             wr.Value = "SCHLUSS:";
         }
 
