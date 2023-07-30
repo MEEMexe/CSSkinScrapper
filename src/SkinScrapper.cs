@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -57,9 +58,8 @@ namespace CSSkinScrapper
             string priceString = responseString.Substring(i + 15, 4);
             priceString = priceString.Replace("-", "0");
 
-            double price = double.Parse(priceString);
-            //TODO: subtract steam market fee
-
+            double price = double.Parse(priceString) / 1.15 - 0.01;
+            price = Math.Round(price, 2);
 
             return price;
         }
