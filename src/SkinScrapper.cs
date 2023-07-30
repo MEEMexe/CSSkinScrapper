@@ -5,10 +5,20 @@ using System.Threading.Tasks;
 
 namespace CSSkinScrapper
 {
+    internal static class HttpClientExtension
+    {
+        public static HttpResponseMessage GetResponseMessage(this HttpClient client, string skinpath)
+        {
+            return client.GetAsync(client.BaseAddress + skinpath).GetAwaiter().GetResult();
+        }
+    }
+
     internal class SkinScrapper
     {
-        private static string baseUrl = "http://steamcommunity.com/market/priceoverview/?currency=3&appid=730&market_hash_name=";
-        private static HttpClient client = new HttpClient();
+        private static HttpClient client = new HttpClient
+        {
+            BaseAddress = new Uri("http://steamcommunity.com/market/priceoverview/?currency=3&appid=730&market_hash_name=")
+        };
 
         public static double[] GetPriceArray(List<string> skinNames, List<string> skinApiNames)
         {
@@ -19,7 +29,7 @@ namespace CSSkinScrapper
             {
                 string form = " price:\t";
                 string skinname = skinNames[i];
-                double price = GetPrice(skinApiNames[i]).GetAwaiter().GetResult();
+                double price = GetPrice(skinApiNames[i]);
 
                 if (skinname.Length < 9)
                     form += "\t";
@@ -32,18 +42,16 @@ namespace CSSkinScrapper
             return priceArray;
         }
 
-        public static async Task<double> GetPrice(string skinpath)
+        public static double GetPrice(string skinpath)
         {
-            string requestUrl = baseUrl + skinpath;
-
-            HttpResponseMessage response = await client.GetAsync(requestUrl);
+            HttpResponseMessage response = client.GetResponseMessage(skinpath);
 
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception();
             }
 
-            string responseString = await response.Content.ReadAsStringAsync();
+            string responseString = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
             int i = responseString.IndexOf("lowest_price");
             string priceString = responseString.Substring(i + 15, 4);
