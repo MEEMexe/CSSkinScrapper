@@ -24,7 +24,7 @@ namespace CSSkinScrapper
             //new skins?
             if (saveFile.skinCount == 0)
             {
-                UserInterface.NewSkin(ref saveFile, ref jsonInterop);
+                UserInterface.NewSkin(saveFile, jsonInterop);
                 newSkin = true;
             }
             else
@@ -32,14 +32,14 @@ namespace CSSkinScrapper
                 Console.WriteLine("Do you want to add new skins [n] or just scan for prices [s]?");
                 if (Console.ReadLine() == "n")
                 {
-                    UserInterface.NewSkin(ref saveFile, ref jsonInterop);
+                    UserInterface.NewSkin(saveFile, jsonInterop);
                     newSkin = true;
                 }
             }
 
             //get newest prices
             Console.WriteLine("\nGetting Prices:");
-            double[] prices = SkinScrapper.GetPriceArray(saveFile.skinNames, saveFile.skinApiNames);
+            double[] prices = SkinScrapper.GetPriceArray(saveFile.skinList);
 
             //Write to excel
             Console.WriteLine("\nWriting to Excelsheet...");

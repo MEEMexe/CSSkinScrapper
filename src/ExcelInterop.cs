@@ -68,9 +68,9 @@ namespace CSSkinScrapper
             for (int i = 0; i < skinCount; i++)
             {
                 wr = workSheet.Cells[i + 4, 2];
-                wr.Value = saveFile.skinNames[i];
+                wr.Value = saveFile.skinList[i].name;
                 wr = workSheet.Cells[i + 4, 4];
-                double d = saveFile.skinBuyPrice[i];
+                double d = saveFile.skinList[i].buyPrice;
                 wr.Value = d;
                 totalPrice += d;
             }
@@ -119,7 +119,7 @@ namespace CSSkinScrapper
             for (int i = 0; i < saveFile.skinCount; i++)
             {
                 double price = skinPriceArray[i];
-                double win = price - saveFile.skinBuyPrice[i];
+                double win = price - saveFile.skinList[i].buyPrice;
                 totalPrice += price;
                 relativePrice += win;
 

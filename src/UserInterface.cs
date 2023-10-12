@@ -4,37 +4,39 @@ namespace CSSkinScrapper
 {
     internal class UserInterface
     {
-        public static void NewSkin(ref SaveFile saveFile, ref JSONInterop jsonInterop)
+        public static void NewSkin(SaveFile saveFile, JSONInterop jsonInterop)
         {
-            NewSkinRecursive(ref saveFile);
+            NewSkinRecursive(saveFile);
             Console.WriteLine("\nSaving json file.");
             jsonInterop.Save(saveFile).GetAwaiter().GetResult();
         }
 
-        private static void NewSkinRecursive(ref SaveFile saveFile)
+        private static void NewSkinRecursive(SaveFile saveFile)
         {
             Tutorial();
             Console.WriteLine("Enter SkinApiName:");
             string? apiSkin = Console.ReadLine();
 
-            int start = apiSkin.IndexOf("%20%7C%20");
-            int end = apiSkin.IndexOf("%20%28");
-            int lenght = end - start - 9;
+            string startPhrase = "%20%7C%20";
+            string endPhrase = "%20%28";
 
-            string skinName = apiSkin.Substring(start + 9, lenght);
+            int start = apiSkin.IndexOf(startPhrase);
+            int end = apiSkin.IndexOf(endPhrase);
+            int lenght = end - start - startPhrase.Length;
+
+            string skinName = apiSkin.Substring(start + startPhrase.Length, lenght);
             skinName = skinName.Replace("%20", " ");
 
             Console.WriteLine($"How much did the {skinName} cost?");
             double price = double.Parse(Console.ReadLine());
 
-            saveFile.skinCount++;
-            saveFile.skinApiNames.Add(apiSkin);
-            saveFile.skinNames.Add(skinName);
-            saveFile.skinBuyPrice.Add(price);
+            //TODO ON STORES-BRANCH: pass skinName instead of apiSkin when seperate stores are implemented
+            Skin skin = new Skin(apiSkin, false, price, Conditions.FactoryNew);
+            saveFile.skinList.Add(skin);
 
             Console.WriteLine("Do you want to add another skin? [y] yes/[n] no");
             if (Console.ReadLine() == "y")
-                NewSkinRecursive(ref saveFile);
+                NewSkinRecursive(saveFile);
         }
 
         private static void Tutorial()
