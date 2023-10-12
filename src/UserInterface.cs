@@ -4,14 +4,14 @@ namespace CSSkinScrapper
 {
     internal class UserInterface
     {
-        public static void NewSkin(ref SaveFile saveFile, ref JSONInterop jsonInterop)
+        public static void NewSkin(SaveFile saveFile, JSONInterop jsonInterop)
         {
-            NewSkinRecursive(ref saveFile);
+            NewSkinRecursive(saveFile);
             Console.WriteLine("\nSaving json file.");
             jsonInterop.Save(saveFile).GetAwaiter().GetResult();
         }
 
-        private static void NewSkinRecursive(ref SaveFile saveFile)
+        private static void NewSkinRecursive(SaveFile saveFile)
         {
             Tutorial();
             Console.WriteLine("Enter SkinApiName:");
@@ -37,7 +37,7 @@ namespace CSSkinScrapper
 
             Console.WriteLine("Do you want to add another skin? [y] yes/[n] no");
             if (Console.ReadLine() == "y")
-                NewSkinRecursive(ref saveFile);
+                NewSkinRecursive(saveFile);
         }
 
         private static void Tutorial()

@@ -4,6 +4,12 @@ using System.Collections.Generic;
 
 namespace CSSkinScrapper
 {
+    public class BadRequestException : Exception { }
+    public class SkinNotFoundException : Exception
+    {
+        public SkinNotFoundException(string message) : base(message) { }
+    }
+
     internal static class HttpClientExtension
     {
         public static HttpResponseMessage GetResponseMessage(this HttpClient client, string skinpath)
@@ -47,7 +53,7 @@ namespace CSSkinScrapper
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new Exception();
+                throw new BadRequestException();
             }
 
             string responseString = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
