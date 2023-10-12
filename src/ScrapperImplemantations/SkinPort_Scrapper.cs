@@ -11,7 +11,19 @@ namespace CSSkinScrapper.ScrapperImplemantations
     {
         private static string baseURL = "https://api.skinport.com/v1/items?app_id=730&currency=EUR&tradable=0";
 
-        internal SkinPort_Scrapper() : base(baseURL) { }
+        private string completeMarket;
+
+        internal SkinPort_Scrapper() : base(baseURL)
+        {
+            HttpResponseMessage response = GetResponse("");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new BadRequestException();
+            }
+
+            completeMarket = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+        }
 
         public override double GetPrice(Skin skin)
         {
