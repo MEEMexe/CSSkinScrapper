@@ -17,11 +17,14 @@ namespace CSSkinScrapper
             Console.WriteLine("Enter SkinApiName:");
             string? apiSkin = Console.ReadLine();
 
-            int start = apiSkin.IndexOf("%20%7C%20");
-            int end = apiSkin.IndexOf("%20%28");
-            int lenght = end - start - 9;
+            string startPhrase = "%20%7C%20";
+            string endPhrase = "%20%28";
 
-            string skinName = apiSkin.Substring(start + 9, lenght);
+            int start = apiSkin.IndexOf(startPhrase);
+            int end = apiSkin.IndexOf(endPhrase);
+            int lenght = end - start - startPhrase.Length;
+
+            string skinName = apiSkin.Substring(start + startPhrase.Length, lenght);
             skinName = skinName.Replace("%20", " ");
 
             Console.WriteLine($"How much did the {skinName} cost?");
