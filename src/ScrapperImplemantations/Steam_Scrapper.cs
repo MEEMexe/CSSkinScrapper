@@ -9,9 +9,7 @@ namespace CSSkinScrapper.ScrapperImplemantations
 {
     internal class Steam_Scrapper : ScrapperBase
     {
-        private static string baseURL = "http://steamcommunity.com/market/priceoverview/?currency=3&appid=730&market_hash_name=";
-
-        internal Steam_Scrapper() : base(baseURL) { }
+        protected override string baseUrl => "http://steamcommunity.com/market/priceoverview/?currency=3&appid=730&market_hash_name=";
 
         public override string GetUrl(Skin skin)
         {
@@ -47,7 +45,7 @@ namespace CSSkinScrapper.ScrapperImplemantations
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new BadRequestException();
+                throw new Exception();
             }
 
             string responseString = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();

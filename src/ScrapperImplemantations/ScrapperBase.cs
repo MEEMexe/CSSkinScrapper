@@ -4,11 +4,13 @@ using System.Collections.Generic;
 
 namespace CSSkinScrapper.ScrapperImplemantations
 {
-    internal abstract class ScrapperBase
+    public abstract class ScrapperBase
     {
+        protected abstract string baseUrl { get; }
+
         private HttpClient client;
 
-        protected ScrapperBase(string baseUrl)
+        protected ScrapperBase()
         {
             client = new HttpClient()
             {
@@ -24,11 +26,5 @@ namespace CSSkinScrapper.ScrapperImplemantations
         {
             return client.GetAsync(client.BaseAddress + skinpath).GetAwaiter().GetResult();
         }
-    }
-
-    public class BadRequestException : Exception { }
-    public class SkinNotFoundException : Exception
-    {
-        public SkinNotFoundException(string message) : base(message) { }
     }
 }

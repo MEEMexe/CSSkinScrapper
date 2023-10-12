@@ -14,10 +14,21 @@ namespace CSSkinScrapper
             scrapperList.Add(new Steam_Scrapper());
         }
 
+        private double[] GetPriceArrays(List<Skin> skins)
+        {
+            foreach (var scrapper in scrapperList)
+            {
+                
+            }
+
+            return null;
+        }
+
         public static double[] GetPriceArray(List<Skin> skins)
         {
-            //TODO: foreach in scrapperList when ExcelInterop is implemented
             return instance.scrapperList[0].GetPriceArray(skins);
+
+            instance.GetPriceArrays(skins);
         }
     }
 }
