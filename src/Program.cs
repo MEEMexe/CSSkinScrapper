@@ -39,7 +39,7 @@ namespace CSSkinScrapper
 
             //get newest prices
             Console.WriteLine("\nGetting Prices:");
-            double[] prices = SkinScrapper.GetPriceArray(saveFile.skinNames, saveFile.skinApiNames);
+            double[] prices = SkinScrapper.GetPriceArray(saveFile.skinList);
 
             //Write to excel
             Console.WriteLine("\nWriting to Excelsheet...");

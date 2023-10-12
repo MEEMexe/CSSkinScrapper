@@ -25,16 +25,17 @@ namespace CSSkinScrapper
             BaseAddress = new Uri("http://steamcommunity.com/market/priceoverview/?currency=3&appid=730&market_hash_name=")
         };
 
-        public static double[] GetPriceArray(List<string> skinNames, List<string> skinApiNames)
+        public static double[] GetPriceArray(List<Skin> skins)
         {
-            int skinCount = skinNames.Count;
+            int skinCount = skins.Count;
             double[] priceArray = new double[skinCount];
 
             for (int i = 0; i < skinCount; i++)
             {
                 string form = " price:\t";
-                string skinname = skinNames[i];
-                double price = GetPrice(skinApiNames[i]);
+                string skinname = skins[i].name;
+                //TODO ON STORES-BRANCH: get api name out of Skin class in abstract method -> different implemantations for different store
+                double price = GetPrice(skins[i].name);
 
                 if (skinname.Length < 9)
                     form += "\t";
@@ -57,7 +58,6 @@ namespace CSSkinScrapper
             }
 
             string responseString = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-
             int i = responseString.IndexOf("lowest_price");
             string priceString = responseString.Substring(i + 15, 4);
             priceString = priceString.Replace("-", "0");

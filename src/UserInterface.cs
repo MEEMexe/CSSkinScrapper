@@ -30,10 +30,9 @@ namespace CSSkinScrapper
             Console.WriteLine($"How much did the {skinName} cost?");
             double price = double.Parse(Console.ReadLine());
 
-            saveFile.skinCount++;
-            saveFile.skinApiNames.Add(apiSkin);
-            saveFile.skinNames.Add(skinName);
-            saveFile.skinBuyPrice.Add(price);
+            //TODO ON STORES-BRANCH: pass skinName instead of apiSkin when seperate stores are implemented
+            Skin skin = new Skin(apiSkin, false, price, Conditions.FactoryNew);
+            saveFile.skinList.Add(skin);
 
             Console.WriteLine("Do you want to add another skin? [y] yes/[n] no");
             if (Console.ReadLine() == "y")

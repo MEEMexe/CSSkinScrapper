@@ -3,6 +3,7 @@ using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CSSkinScrapper
 {
@@ -60,21 +61,21 @@ namespace CSSkinScrapper
 
     public class SaveFile
     {
-        public int runCount {  get; set; }
-        public int skinCount { get; set; }
-        public string filePath { get; set; }
-        public List<string> skinNames { get; set; }
-        public List<string> skinApiNames { get; set; }
-        public List<double> skinBuyPrice { get;set; }
+        [JsonInclude]
+        public int runCount;
+        [JsonInclude]
+        public string filePath;
+        [JsonInclude]
+        public List<Skin> skinList { get; private set; }
+
+        [JsonIgnore]
+        public int skinCount => skinList.Count;
 
         public SaveFile()
         {
             runCount = 0;
-            skinCount = 0;
             filePath = "";
-            skinNames = new List<string>();
-            skinApiNames = new List<string>();
-            skinBuyPrice = new List<double>();
+            skinList = new List<Skin>();
         }
     }
 }
