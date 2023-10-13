@@ -4,8 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSSkinScrapper.ScrapperImplemantations
+namespace CSSkinScrapper
 {
+    public enum Conditions
+    {
+        FactoryNew,
+        MinimalWear,
+        FieldTested,
+        WellWorn,
+        BattleScarred
+    }
+
     public enum Weapon
     {
         //Pistols
@@ -55,8 +64,17 @@ namespace CSSkinScrapper.ScrapperImplemantations
         SSG08,
     }
 
-    public class WeaponStrings
+    public class SkinStrings
     {
+        public string[] conditions =
+        {
+            "Factory New",
+            "Minimal Wear",
+            "Field-Tested",
+            "Well-Worn",
+            "Battle-Scarred",
+        };
+
         public string[] weapons =
         {
             //Pistols
