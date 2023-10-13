@@ -2,19 +2,12 @@
 
 namespace CSSkinScrapper
 {
-    public enum Conditions
-    {
-        FactoryNew,
-        MinimalWear,
-        FieldTested,
-        WellWorn,
-        BattleScarred
-    }
-
     public class Skin
     {
         [JsonInclude]
         public string name;
+        [JsonInclude]
+        public Weapon type;
         [JsonInclude]
         public bool statTrak;
         [JsonInclude]
@@ -25,12 +18,13 @@ namespace CSSkinScrapper
         [JsonIgnore]
         public float currentPrice;
 
-        public Skin(string name, bool statTrak, double buyPrice, Conditions condition)
+        public Skin(string name, Weapon type, bool statTrak, double buyPrice, Conditions condition)
         {
             this.statTrak = statTrak;
             this.buyPrice = buyPrice;
             this.name = name;
             this.condition = condition;
+            this.type = type;
         }
 
         /* Method for checking if Skin exists

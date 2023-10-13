@@ -30,8 +30,10 @@ namespace CSSkinScrapper
             Console.WriteLine($"How much did the {skinName} cost?");
             double price = double.Parse(Console.ReadLine());
 
-            //TODO ON STORES-BRANCH: pass skinName instead of apiSkin when seperate stores are implemented
-            Skin skin = new Skin(apiSkin, false, price, Conditions.FactoryNew);
+            //TODO: pass skinName instead of apiSkin when seperate stores are implemented
+            //      !!! skinames can't have a whitespace at the end !!!
+            //      add weapon type (enum)
+            Skin skin = new Skin(apiSkin, Weapon.M4A4, false, price, Conditions.FactoryNew);
             saveFile.skinList.Add(skin);
 
             Console.WriteLine("Do you want to add another skin? [y] yes/[n] no");
