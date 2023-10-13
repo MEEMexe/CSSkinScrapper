@@ -1,10 +1,32 @@
 ﻿using System;
+using System.Net.Http;
 
 namespace CSSkinScrapper
 {
     internal class UserInterface
     {
+        private static SkinStrings skinStrings = new SkinStrings();
+
         public static void NewSkin(SaveFile saveFile, JSONInterop jsonInterop)
+        {
+            Console.WriteLine("Enter Skin Name:");
+            string input = Console.ReadLine();
+            var skin = new Skin(input, Weapon.M4A4, false, 69, Conditions.MinimalWear);
+            if (SkinScrapper.SkinExists(skin))
+            {
+                Console.WriteLine(skin);
+                Console.WriteLine("YES");
+            }
+
+
+        }
+    }
+
+    internal class OldUserInterface
+    {
+
+
+        public static void NewSkinOld(SaveFile saveFile, JSONInterop jsonInterop)
         {
             NewSkinRecursive(saveFile);
             Console.WriteLine("\nSaving json file.");

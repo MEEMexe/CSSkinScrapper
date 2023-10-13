@@ -1,8 +1,9 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Text.Json.Serialization;
 
 namespace CSSkinScrapper
 {
-    public class Skin
+    public class Skin : IFormattable
     {
         [JsonInclude]
         public string name;
@@ -27,43 +28,14 @@ namespace CSSkinScrapper
             this.type = type;
         }
 
-        /* Method for checking if Skin exists
-        public static bool NameCheck(string name)
+        public string ToString(string? format, IFormatProvider? formatProvider)
         {
-            bool success = true;
+            string target = string.Empty;
+            if (statTrak)
+                target += "StatTrak ";
+            target += type + " " + name + " " + condition;
 
-            try
-            {
-                SkinScrapper.GetPrice(name);
-            }
-            catch (BadRequestException)
-            {
-                if (name.Contains(' '))
-                {
-                    name = name.Replace(' ', '-');
-                }
-                else
-                {
-                    name = name.Replace('-', ' ');
-                }
-                checkCount++;
-                if (checkCount >= 2)
-                {
-                    success = false;
-                }
-                else
-                {
-                    NameCheck(name);
-                }
-            }
-
-            if (!success)
-            {
-                throw new SkinNotFoundException($"The skin: {name} does not exist.");
-            }
-
-            return name;
+            return target;
         }
-        */
     }
 }
