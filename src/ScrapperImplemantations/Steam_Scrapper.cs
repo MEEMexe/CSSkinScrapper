@@ -11,9 +11,39 @@ namespace CSSkinScrapper.ScrapperImplemantations
     {
         protected override string baseUrl => "http://steamcommunity.com/market/priceoverview/?currency=3&appid=730&market_hash_name=";
 
+        private static string weaponApi = "%20%7C%20";
+        private static string conditionApi = "%20%28";
+        private static string statTrakApi = "StatTrak%E2%84%A2%20";
+
+        internal Steam_Scrapper()
+        {
+            for (int i = 0; i < weaponStrings.weapons.Length; i++)
+            {
+                CleanWhiteSpaces(ref weaponStrings.weapons[i]);
+            }
+
+            for (int i = 0; i < weaponStrings.conditions.Length; i++)
+            {
+                CleanWhiteSpaces(ref weaponStrings.weapons[i]);
+            }
+        }
+
         public override string GetUrl(Skin skin)
         {
-            throw new NotImplementedException();
+            string apiSkin = string.Empty;
+
+            if (skin.statTrak)
+            {
+                apiSkin += statTrakApi;
+            }
+
+            apiSkin += weaponStrings.weapons[(int)skin.type] + weaponApi;
+            apiSkin += skin.name;
+            apiSkin += conditionApi + weaponStrings.conditions[(int)skin.condition] + "%29";
+
+            CleanWhiteSpaces(ref apiSkin);
+
+            return apiSkin;
         }
 
         public override double[] GetPriceArray(List<Skin> skins)
@@ -23,15 +53,18 @@ namespace CSSkinScrapper.ScrapperImplemantations
 
             for (int i = 0; i < skinCount; i++)
             {
-                string form = " price:\t";
+                string form = " \tprice:\t";
                 string skinname = skins[i].name;
                 //TODO ON STORES-BRANCH: get api name out of Skin class in abstract method -> different implemantations for different store
-                double price = GetPrice(skins[i]);
+                double price = GetPrice(GetUrl(skins[i]));
 
                 if (skinname.Length < 9)
                     form += "\t";
 
                 priceArray[i] = price;
+
+                if (skins[i].statTrak)
+                    skinname = skinname.Insert(0, "StatTrak ");
 
                 Console.WriteLine(skinname + form + price);
             }
@@ -39,9 +72,9 @@ namespace CSSkinScrapper.ScrapperImplemantations
             return priceArray;
         }
 
-        public override double GetPrice(Skin skin)
+        public override double GetPrice(string apiSkin)
         {
-            HttpResponseMessage response = GetResponse(skin.name);
+            HttpResponseMessage response = GetResponse(apiSkin);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -57,6 +90,16 @@ namespace CSSkinScrapper.ScrapperImplemantations
             price = Math.Round(price, 2);
 
             return price;
+        }
+
+        private static string CleanWhiteSpaces(ref string toClean)
+        {
+            while (toClean.Contains(" "))
+            {
+                toClean = toClean.Replace(" ", "%20");
+            }
+
+            return toClean;
         }
     }
 }

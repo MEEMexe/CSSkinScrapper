@@ -1,11 +1,26 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CSSkinScrapper
 {
     internal class Program
     {
+        static void TestNewScrapper()
+        {
+            var l = new List<Skin>
+            {
+                new Skin("In Living Color", Weapon.M4A4, false, 69, Conditions.MinimalWear),
+                new Skin("In Living Color", Weapon.M4A4, true, 69, Conditions.MinimalWear),
+            };
+
+            SkinScrapper.GetPriceArray(l);
+        }
+
         static void Main(string[] args)
         {
+            TestNewScrapper();
+            return;
+
             ScopeToTriggerGC();
 
             //Wait for Excel Process to finalize
