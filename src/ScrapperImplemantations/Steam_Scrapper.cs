@@ -53,18 +53,21 @@ namespace CSSkinScrapper.ScrapperImplemantations
 
             for (int i = 0; i < skinCount; i++)
             {
-                string form = " \tprice:\t";
+                string form = string.Empty;
                 string skinname = skins[i].name;
                 //TODO ON STORES-BRANCH: get api name out of Skin class in abstract method -> different implemantations for different store
                 double price = GetPrice(GetUrl(skins[i]));
-
-                if (skinname.Length < 9)
-                    form += "\t";
-
                 priceArray[i] = price;
+
+                //console print form
+                if (skinname.Length < 17)
+                    form += "\t\t";
 
                 if (skins[i].statTrak)
                     skinname = skinname.Insert(0, "StatTrak ");
+                else
+                    form += "\t\t";
+                form += " price: \t";
 
                 Console.WriteLine(skinname + form + price);
             }

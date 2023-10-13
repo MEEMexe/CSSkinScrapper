@@ -5,12 +5,16 @@ namespace CSSkinScrapper
 {
     internal class Program
     {
-        static void TestNewScrapper()
+        static void ProofNewScrapper()
         {
             var l = new List<Skin>
             {
                 new Skin("In Living Color", Weapon.M4A4, false, 69, Conditions.MinimalWear),
                 new Skin("In Living Color", Weapon.M4A4, true, 69, Conditions.MinimalWear),
+                new Skin("Nightwish", Weapon.AK47, false, 74, Conditions.MinimalWear),
+                new Skin("Neo-Noir", Weapon.Glock18, false, 50, Conditions.FactoryNew),
+                new Skin("Neo-Noir", Weapon.Glock18, false, 50, Conditions.BattleScarred),
+                new Skin("Decimator", Weapon.M4A1S, false, 50, Conditions.WellWorn),
             };
 
             SkinScrapper.GetPriceArray(l);
@@ -18,7 +22,7 @@ namespace CSSkinScrapper
 
         static void Main(string[] args)
         {
-            TestNewScrapper();
+            ProofNewScrapper();
             return;
 
             ScopeToTriggerGC();
