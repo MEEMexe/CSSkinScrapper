@@ -9,17 +9,101 @@ namespace CSSkinScrapper
 
         public static void NewSkin(SaveFile saveFile, JSONInterop jsonInterop)
         {
-            Console.WriteLine("Enter Skin Name:");
-            string input = Console.ReadLine();
-            var skin = new Skin(input, Weapon.M4A4, false, 69, Conditions.MinimalWear);
-            if (SkinScrapper.SkinExists(skin))
-            {
-                Console.WriteLine(skin);
-                Console.WriteLine("YES");
-            }
-
 
         }
+
+        private static Skin NewSkinUI()
+        {
+            Weapon skinWeapon = WeaponSelector();
+            Console.WriteLine("\nEnter the name of your skin:");
+            string skinName = Console.ReadLine();
+
+            throw new NotImplementedException();
+        }
+
+        #region WeaponSelection
+        private static Weapon WeaponSelector()
+        {
+            Console.WriteLine("\nFor wich weapon category:");
+            int cat = WeaponCategory();
+
+            Console.WriteLine("\nFor wich weapon specific:");
+            return (Weapon)ChooseWeapon(cat);      
+        }
+
+        private static int WeaponCategory()
+        {
+            Console.WriteLine("0 - Pistols");
+            Console.WriteLine("1 - Shotguns");
+            Console.WriteLine("2 - SMGs");
+            Console.WriteLine("3 - Rifles");
+            Console.WriteLine("4 - LMGs");
+            Console.WriteLine("5 - Sniper Rifles");
+            int weaponCategory = int.Parse(Console.ReadLine());
+
+            if (weaponCategory < 0 || weaponCategory > 5)
+            {
+                Console.WriteLine("Enter one of the numbers below:");
+                return WeaponCategory();
+            }
+
+            return weaponCategory;
+        }
+
+        private static int ChooseWeapon(int weaponCategory)
+        {
+            int offset = 0;
+            int categoryCount = 0;
+
+            switch (weaponCategory)
+            {
+                case 0:
+                    offset = 0;
+                    categoryCount = PrintWeapons(offset, 10);
+                    break;
+                case 1:
+                    offset = 10;
+                    categoryCount = PrintWeapons(offset, 14);
+                    break;
+                case 2:
+                    offset = 14;
+                    categoryCount = PrintWeapons(offset, 21);
+                    break;
+                case 3:
+                    offset = 21;
+                    categoryCount = PrintWeapons(offset, 28);
+                    break;
+                case 4:
+                    offset = 28;
+                    categoryCount = PrintWeapons(offset, 30);
+                    break;
+                case 5:
+                    offset = 30;
+                    categoryCount = PrintWeapons(offset, 34);
+                    break;
+            }
+
+            int choosenWeapon = int.Parse(Console.ReadLine());
+
+            if (choosenWeapon < 0 || choosenWeapon > categoryCount)
+            {
+                Console.WriteLine("Enter one of the numbers below:");
+                return ChooseWeapon(weaponCategory);
+            }
+
+            return choosenWeapon;
+        }
+
+        private static int PrintWeapons(int startIndex, int endIndex)
+        {
+            for (int i = startIndex; i < endIndex; i++)
+            {
+                Console.WriteLine("0 - " + skinStrings.weapons[i]);
+            }
+
+            return endIndex - startIndex;
+        }
+        #endregion
     }
 
     internal class OldUserInterface
