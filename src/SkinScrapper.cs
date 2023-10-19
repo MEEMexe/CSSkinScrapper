@@ -30,19 +30,19 @@ namespace CSSkinScrapper
                 {
                     var skinName = skin.name;
 
-                    if (skinName.Contains(" "))
+                    if (skinName.Contains(' '))
                     {
-                        while (skinName.Contains(" "))
+                        while (skinName.Contains(' '))
                         {
-                            skinName = skinName.Replace(" ", "-");
+                            skinName = skinName.Replace(' ', '-');
                         }
 
                     }
-                    else if (skinName.Contains("-"))
+                    else if (skinName.Contains('-'))
                     {
-                        while (skinName.Contains("-"))
+                        while (skinName.Contains('-'))
                         {
-                            skinName = skinName.Replace("-", " ");
+                            skinName = skinName.Replace('-', ' ');
                         }
                     }
 
