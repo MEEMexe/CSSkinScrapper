@@ -55,7 +55,6 @@ namespace CSSkinScrapper.ScrapperImplemantations
             {
                 string form = string.Empty;
                 string skinname = skins[i].name;
-                //TODO ON STORES-BRANCH: get api name out of Skin class in abstract method -> different implemantations for different store
                 double price = GetPrice(GetUrl(skins[i]));
                 priceArray[i] = price;
 
@@ -95,14 +94,9 @@ namespace CSSkinScrapper.ScrapperImplemantations
             return price;
         }
 
-        private static string CleanWhiteSpaces(ref string toClean)
+        private static void CleanWhiteSpaces(ref string toClean)
         {
-            while (toClean.Contains(" "))
-            {
-                toClean = toClean.Replace(" ", "%20");
-            }
-
-            return toClean;
+            toClean = toClean.Replace(" ", "%20");
         }
     }
 }
