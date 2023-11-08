@@ -15,9 +15,10 @@ namespace CSSkinScrapper
             scrapperList.Add(new Steam_Scrapper());
         }
 
-        public static bool SkinExists(Skin skin, bool recursive = true)
+        public static bool SkinExists(string skinUserName, Weapon weapon, bool recursive = true)
         {
-            //TODO: this is awful
+            //TODO: this whole method is awful
+            var skin = new Skin(skinUserName, weapon, false, 69, Conditions.FactoryNew);
             var api = instance.scrapperList[0].GetUrl(skin);
             try
             {
@@ -46,12 +47,11 @@ namespace CSSkinScrapper
                         }
                     }
 
-                    skin.name = skinName;
-
-                    return SkinExists(skin, false);
+                    return SkinExists(skinName, weapon, false);
                 }
                 else
                 {
+                    //TODO: don't throw up
                     throw new Exception($"The Skin {skin.name} does not exist.");
                 }
             }

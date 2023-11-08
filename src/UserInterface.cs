@@ -16,9 +16,19 @@ namespace CSSkinScrapper
         {
             Weapon skinWeapon = WeaponSelector();
             Console.WriteLine("\nEnter the name of your skin:");
-            string skinName = Console.ReadLine();
+
+
 
             throw new NotImplementedException();
+        }
+
+        private static string SkinSelector(Weapon weapon)
+        {
+            string skinName = Console.ReadLine();
+            if (SkinScrapper.SkinExists(skinName, weapon))
+            {
+
+            }
         }
 
         #region WeaponSelection

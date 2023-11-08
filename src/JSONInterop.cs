@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
+//#1 read summary from method below (FileStream.Close()) -> so call saveFile.Dispose ?
+
 namespace CSSkinScrapper
 {
     internal class JSONInterop
@@ -25,6 +27,7 @@ namespace CSSkinScrapper
         {
             await using FileStream saveFile = File.OpenWrite(jsonPath);
             await JsonSerializer.SerializeAsync(saveFile, objectToSave, serializerOptions);
+            //TODO: #1 at top
             saveFile.Close();
         }
 
@@ -41,6 +44,7 @@ namespace CSSkinScrapper
 
                 await using FileStream newFile = File.Create(jsonPath);
                 await JsonSerializer.SerializeAsync(newFile, newSave, serializerOptions);
+                //TODO: #1 at top
                 newFile.Close();
                 return newSave;
             }
@@ -50,6 +54,7 @@ namespace CSSkinScrapper
 
                 StreamReader sr = new StreamReader(jsonPath);
                 string json = sr.ReadToEnd();
+                //TODO: #1 at top
                 sr.Close();
                 SaveFile? s = JsonSerializer.Deserialize<SaveFile>(json, serializerOptions);
                 s.runCount++;
