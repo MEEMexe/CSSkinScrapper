@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Net.Http;
+using System.Collections.Generic;
 
 namespace CSSkinScrapper
 {
@@ -7,60 +7,137 @@ namespace CSSkinScrapper
     {
         private static SkinStrings skinStrings = new SkinStrings();
 
-        public static void NewSkin(SaveFile saveFile, JSONInterop jsonInterop)
+        public void NewSkin(IList<Skin> skinList)
         {
-
+            skinList.Add(NewSkinUI());
+            Console.WriteLine("Do you want to add another skin?");
+            if (BoolUiSelector())
+                NewSkin(skinList);
         }
 
-        private static Skin NewSkinUI()
+        private int IntUiSelector(int max)
         {
-            Weapon skinWeapon = WeaponSelector();
-            Console.WriteLine("\nEnter the name of your skin:");
+            var input = Console.ReadLine();
+            bool success = int.TryParse(input, out int value);
 
-
-
-            throw new NotImplementedException();
-        }
-
-        private static string SkinSelector(Weapon weapon)
-        {
-            string skinName = Console.ReadLine();
-            if (SkinScrapper.SkinExists(skinName, weapon))
+            if (!success | value < 0 | value > max)
             {
+                Console.WriteLine("Enter one of the numbers above:");
+                return IntUiSelector(max);
+            }
 
+            return value;
+        }
+
+        private bool BoolUiSelector()
+        {
+            Console.WriteLine("Type [y] for yes or [n] for no.");
+            var input = Console.ReadLine();
+
+            if (input != "y" && input != "n")
+            {
+                return BoolUiSelector();
+            }
+            else
+            {
+                if (input == "y")
+                    return true;
+                else
+                    return false;
             }
         }
 
-        #region WeaponSelection
-        private static Weapon WeaponSelector()
+        private Skin NewSkinUI()
         {
-            Console.WriteLine("\nFor wich weapon category:");
-            int cat = WeaponCategory();
+            Console.Clear();
 
-            Console.WriteLine("\nFor wich weapon specific:");
-            return (Weapon)ChooseWeapon(cat);      
+            Console.WriteLine("For wich weapon did you get a new skin?");
+            Weapon weapon = WeaponSelector();
+            Console.Clear();
+
+            Console.WriteLine("\nEnter the name of your skin:");
+            string name = NameSelector(weapon);
+            Console.Clear();
+
+            Console.WriteLine($"In wich condition did you get the {name} ?");
+            Conditions condition = ConditionSelector();
+            Console.Clear();
+
+            Console.WriteLine($"Did you get the {condition} {name} in StatTrak?");
+            bool statTrak = BoolUiSelector();
+            Console.Clear();
+
+            string msg = $"How much did the {condition} {name}";
+            if (statTrak)
+                msg += " in StatTrak";
+            Console.WriteLine($"{msg} cost?");
+            double price = BuyPriceInput();
+            Console.Clear();
+
+            Skin skin = new Skin(name, weapon, statTrak, price, condition);
+
+            Console.WriteLine($"Is the '{skin}' correct?)");
+            if (!BoolUiSelector())
+            {
+                Console.WriteLine("This will restart the SkinSelection from scratch.");
+                Console.WriteLine("Are you sure you want to do this?");
+                if (BoolUiSelector())
+                    return NewSkinUI();
+            }
+            Console.Clear();
+            return skin;
         }
 
-        private static int WeaponCategory()
+        private double BuyPriceInput()
         {
+            string price = Console.ReadLine();
+            bool success = double.TryParse(price, out double value);
+            if (!success)
+            {
+                Console.WriteLine("Input a numerical value with [,] as comma.");
+                return BuyPriceInput();
+            }
+            return value;
+        }
+
+        private Conditions ConditionSelector()
+        {
+            Console.WriteLine("0 - FactoryNew");
+            Console.WriteLine("1 - MinimalWear");
+            Console.WriteLine("2 - FieldTested");
+            Console.WriteLine("3 - WellWorn");
+            Console.WriteLine("4 - BattleScarred");
+
+            return (Conditions)IntUiSelector(4);
+        }
+
+        private string NameSelector(Weapon weapon)
+        {
+            string skinName = Console.ReadLine();
+            //TODO: verify -> when SkinPort market is done maybe create instance of it in constructor and put .Exists(Skin) there
+            //      skinames can't have a whitespace at the end!
+            return skinName;
+        }
+
+        #region WeaponTypeSelection
+        private Weapon WeaponSelector()
+        {
+            Console.WriteLine("\nFor wich weapon category:");
             Console.WriteLine("0 - Pistols");
             Console.WriteLine("1 - Shotguns");
             Console.WriteLine("2 - SMGs");
             Console.WriteLine("3 - Rifles");
             Console.WriteLine("4 - LMGs");
             Console.WriteLine("5 - Sniper Rifles");
-            int weaponCategory = int.Parse(Console.ReadLine());
+            int cat = IntUiSelector(5);
+            Console.Clear();
 
-            if (weaponCategory < 0 || weaponCategory > 5)
-            {
-                Console.WriteLine("Enter one of the numbers below:");
-                return WeaponCategory();
-            }
-
-            return weaponCategory;
+            Console.WriteLine("For wich weapon did you get a new skin?");
+            Console.WriteLine("\nFor wich weapon specific:");
+            return (Weapon)ChooseWeapon(cat);      
         }
 
-        private static int ChooseWeapon(int weaponCategory)
+        private int ChooseWeapon(int weaponCategory)
         {
             int offset = 0;
             int categoryCount = 0;
@@ -93,89 +170,22 @@ namespace CSSkinScrapper
                     break;
             }
 
-            int choosenWeapon = int.Parse(Console.ReadLine());
+            int choosenWeapon = IntUiSelector(categoryCount);
 
-            if (choosenWeapon < 0 || choosenWeapon > categoryCount)
-            {
-                Console.WriteLine("Enter one of the numbers below:");
-                return ChooseWeapon(weaponCategory);
-            }
-
-            return choosenWeapon;
+            return offset + choosenWeapon;
         }
 
-        private static int PrintWeapons(int startIndex, int endIndex)
+        private int PrintWeapons(int startIndex, int endIndex)
         {
+            int count = 0;
             for (int i = startIndex; i < endIndex; i++)
             {
-                Console.WriteLine("0 - " + skinStrings.weapons[i]);
+                Console.WriteLine(count + " - " + skinStrings.weapons[i]);
+                count++;
             }
 
             return endIndex - startIndex;
         }
         #endregion
-    }
-
-    internal class OldUserInterface
-    {
-
-
-        public static void NewSkinOld(SaveFile saveFile, JSONInterop jsonInterop)
-        {
-            NewSkinRecursive(saveFile);
-            Console.WriteLine("\nSaving json file.");
-            jsonInterop.Save(saveFile).GetAwaiter().GetResult();
-        }
-
-        private static void NewSkinRecursive(SaveFile saveFile)
-        {
-            Tutorial();
-            Console.WriteLine("Enter SkinApiName:");
-            string? apiSkin = Console.ReadLine();
-
-            string startPhrase = "%20%7C%20";
-            string endPhrase = "%20%28";
-
-            int start = apiSkin.IndexOf(startPhrase);
-            int end = apiSkin.IndexOf(endPhrase);
-            int lenght = end - start - startPhrase.Length;
-
-            string skinName = apiSkin.Substring(start + startPhrase.Length, lenght);
-            skinName = skinName.Replace("%20", " ");
-
-            Console.WriteLine($"How much did the {skinName} cost?");
-            double price = double.Parse(Console.ReadLine());
-
-            //TODO: pass skinName instead of apiSkin when seperate stores are implemented
-            //      !!! skinames can't have a whitespace at the end !!!
-            //      add weapon type (enum)
-            Skin skin = new Skin(apiSkin, Weapon.M4A4, false, price, Conditions.FactoryNew);
-            saveFile.skinList.Add(skin);
-
-            Console.WriteLine("Do you want to add another skin? [y] yes/[n] no");
-            if (Console.ReadLine() == "y")
-                NewSkinRecursive(saveFile);
-        }
-
-        private static void Tutorial()
-        {
-            Console.WriteLine("Show how to add skins? [y] yes/[n] no");
-            string? yesno = Console.ReadLine();
-
-            if (yesno == "y")
-            {
-                Console.WriteLine("How to add new skins:");
-                Console.WriteLine("Search your exact on the steam market.");
-
-                Console.WriteLine("Copy and paste the green highlighted part of the URL below.");
-                Console.WriteLine("Base URL:");
-                Console.Write("https://steamcommunity.com/market/listings/730/");
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("StatTrak%E2%84%A2%20AK-47%20%7C%20Nightwish%20%28Factory%20New%29");
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("To Copy:");
-                Console.WriteLine("StatTrak%E2%84%A2%20AK-47%20%7C%20Nightwish%20%28Factory%20New%29\n\n");
-            }
-        }
     }
 }
