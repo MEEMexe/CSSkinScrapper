@@ -5,7 +5,7 @@ namespace CSSkinScrapper
 {
     internal class UserInterface
     {
-        private static SkinStrings skinStrings = new SkinStrings();
+        private SkinStrings skinStrings = new SkinStrings();
 
         public void NewSkin(IList<Skin> skinList)
         {
@@ -17,7 +17,7 @@ namespace CSSkinScrapper
 
         private int IntUiSelector(int max)
         {
-            var input = Console.ReadLine();
+            string? input = Console.ReadLine();
             bool success = int.TryParse(input, out int value);
 
             if (!success | value < 0 | value > max)
@@ -32,7 +32,7 @@ namespace CSSkinScrapper
         private bool BoolUiSelector()
         {
             Console.WriteLine("Type [y] for yes or [n] for no.");
-            var input = Console.ReadLine();
+            string? input = Console.ReadLine();
 
             if (input != "y" && input != "n")
             {
@@ -90,7 +90,7 @@ namespace CSSkinScrapper
 
         private double BuyPriceInput()
         {
-            string price = Console.ReadLine();
+            string? price = Console.ReadLine();
             bool success = double.TryParse(price, out double value);
             if (!success)
             {
@@ -113,7 +113,7 @@ namespace CSSkinScrapper
 
         private string NameSelector(Weapon weapon)
         {
-            string skinName = Console.ReadLine();
+            string? skinName = Console.ReadLine();
             //TODO: verify -> when SkinPort market is done maybe create instance of it in constructor and put .Exists(Skin) there
             //      skinames can't have a whitespace at the end!
             return skinName;
