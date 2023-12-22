@@ -1,11 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 
 namespace CSSkinScrapper
 {
     internal class UserInterface
     {
         private SkinStrings skinStrings = new SkinStrings();
+        private string completeMarket
+        {
+            get
+            {
+                if (m_completeMarket == "")
+                {
+                    using (var client = new HttpClient())
+                    {
+                        var response = client.GetAsync("https://api.skinport.com/v1/items?app_id=730&currency=EUR&tradable=0").GetAwaiter().GetResult();
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            //TODO: dont throw up
+                            throw new Exception();
+                        }
+                        m_completeMarket = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                    }
+                }
+                return m_completeMarket;
+            }
+        }
+
+        private string m_completeMarket = "";
 
         public void NewSkin(IList<Skin> skinList)
         {
@@ -114,8 +137,33 @@ namespace CSSkinScrapper
         private string NameSelector(Weapon weapon)
         {
             string? skinName = Console.ReadLine();
-            //TODO: verify -> when SkinPort market is done maybe create instance of it in constructor and put .Exists(Skin) there
-            //      skinames can't have a whitespace at the end!
+
+            if (skinName is null | skinName == "")
+            {
+                Console.WriteLine("You have to input something.");
+                return NameSelector(weapon);
+            }
+
+            Console.Clear();
+            Console.WriteLine("Checking if the skin exists...");
+
+#pragma warning disable CS8602 // Null catch above
+            int i = skinName.Length - 1;
+#pragma warning restore CS8602
+            if (skinName[i] == ' ')
+                skinName = skinName.Remove(i);
+
+            //get random instance of this name
+            string toSearch = $"{weapon} | {skinName} (Field-Tested)";
+            bool success = completeMarket.Contains(toSearch);
+
+            if (!success)
+            {
+                Console.Clear();
+                Console.WriteLine($"This skin dosn't exist. Weapon selected: {weapon}. Try again:");
+                return NameSelector(weapon);
+            }
+
             return skinName;
         }
 
