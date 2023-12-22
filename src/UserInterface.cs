@@ -177,20 +177,16 @@ namespace CSSkinScrapper
             Console.WriteLine("3 - Rifles");
             Console.WriteLine("4 - LMGs");
             Console.WriteLine("5 - Sniper Rifles");
-            int cat = IntUiSelector(5);
+            int category = IntUiSelector(5);
             Console.Clear();
 
             Console.WriteLine("For wich weapon did you get a new skin?");
             Console.WriteLine("\nFor wich weapon specific:");
-            return (Weapon)ChooseWeapon(cat);      
-        }
 
-        private int ChooseWeapon(int weaponCategory)
-        {
             int offset = 0;
             int categoryCount = 0;
 
-            switch (weaponCategory)
+            switch (category)
             {
                 case 0:
                     offset = 0;
@@ -220,7 +216,7 @@ namespace CSSkinScrapper
 
             int choosenWeapon = IntUiSelector(categoryCount);
 
-            return offset + choosenWeapon;
+            return (Weapon)(offset + choosenWeapon);
         }
 
         private int PrintWeapons(int startIndex, int endIndex)
