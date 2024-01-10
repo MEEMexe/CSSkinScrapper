@@ -33,7 +33,8 @@ namespace CSSkinScrapper
             string target = string.Empty;
             if (statTrak)
                 target += "StatTrak ";
-            target += type + " " + name + " " + condition;
+            target += SkinStrings.defaultWeapons[(int)type];
+            target += " " + name + " " + condition;
 
             return target;
         }

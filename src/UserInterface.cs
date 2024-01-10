@@ -6,7 +6,6 @@ namespace CSSkinScrapper
 {
     internal class UserInterface
     {
-        private SkinStrings skinStrings = new SkinStrings();
         private string completeMarket
         {
             get
@@ -19,7 +18,7 @@ namespace CSSkinScrapper
                         if (!response.IsSuccessStatusCode)
                         {
                             //TODO: dont throw up
-                            throw new Exception();
+                            throw new Exception("Couldn't get the market from skinport.");
                         }
                         m_completeMarket = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
                     }
@@ -97,9 +96,9 @@ namespace CSSkinScrapper
             double price = BuyPriceInput();
             Console.Clear();
 
-            Skin skin = new Skin(name, weapon, statTrak, price, condition);
+            var skin = new Skin(name, weapon, statTrak, price, condition);
 
-            Console.WriteLine($"Is the '{skin}' correct?)");
+            Console.WriteLine($"Is the '{skin}' correct?");
             if (!BoolUiSelector())
             {
                 Console.WriteLine("This will restart the SkinSelection from scratch.");
@@ -146,6 +145,7 @@ namespace CSSkinScrapper
 
             Console.Clear();
             Console.WriteLine("Checking if the skin exists...");
+            Console.WriteLine("This might take a while for the first skin...");
 
 #pragma warning disable CS8602 // Null catch above
             int i = skinName.Length - 1;
@@ -154,7 +154,7 @@ namespace CSSkinScrapper
                 skinName = skinName.Remove(i);
 
             //get random instance of this name
-            string toSearch = $"{weapon} | {skinName} (Field-Tested)";
+            string toSearch = $"{SkinStrings.defaultWeapons[(int)weapon]} | {skinName} (Field-Tested)";
             bool success = completeMarket.Contains(toSearch);
 
             if (!success)
@@ -224,11 +224,11 @@ namespace CSSkinScrapper
             int count = 0;
             for (int i = startIndex; i < endIndex; i++)
             {
-                Console.WriteLine(count + " - " + skinStrings.weapons[i]);
+                Console.WriteLine(count + " - " + SkinStrings.defaultWeapons[i]);
                 count++;
             }
 
-            return endIndex - startIndex;
+            return endIndex - startIndex - 1;
         }
         #endregion
     }

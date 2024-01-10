@@ -66,6 +66,8 @@ namespace CSSkinScrapper
 
     public class SkinStrings
     {
+        public static readonly string[] defaultWeapons = new SkinStrings().weapons;
+
         public string[] conditions =
         {
             "Factory New",
