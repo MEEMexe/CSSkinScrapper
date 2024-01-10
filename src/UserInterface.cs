@@ -98,10 +98,11 @@ namespace CSSkinScrapper
 
             var skin = new Skin(name, weapon, statTrak, price, condition);
 
-            Console.WriteLine($"Is the '{skin}' correct?");
+            Console.WriteLine($"Is the '{skin}' for {skin.buyPrice}€ correct?");
             if (!BoolUiSelector())
             {
-                Console.WriteLine("This will restart the SkinSelection from scratch.");
+                //TODO: maybe don't restart from scratch and ask what information is wrong
+                Console.WriteLine("This will restart the SkinSelection for the current Skin from scratch.");
                 Console.WriteLine("Are you sure you want to do this?");
                 if (BoolUiSelector())
                     return NewSkinUI();
@@ -137,7 +138,7 @@ namespace CSSkinScrapper
         {
             string? skinName = Console.ReadLine();
 
-            if (skinName is null | skinName == "")
+            if (string.IsNullOrWhiteSpace(skinName))
             {
                 Console.WriteLine("You have to input something.");
                 return NameSelector(weapon);
@@ -147,9 +148,7 @@ namespace CSSkinScrapper
             Console.WriteLine("Checking if the skin exists...");
             Console.WriteLine("This might take a while for the first skin...");
 
-#pragma warning disable CS8602 // Null catch above
             int i = skinName.Length - 1;
-#pragma warning restore CS8602
             if (skinName[i] == ' ')
                 skinName = skinName.Remove(i);
 
@@ -186,6 +185,7 @@ namespace CSSkinScrapper
             int offset = 0;
             int categoryCount = 0;
 
+            //TODO: this whole thing is awfully writen
             switch (category)
             {
                 case 0:
