@@ -15,48 +15,6 @@ namespace CSSkinScrapper
             scrapperList.Add(new Steam_Scrapper());
         }
 
-        public static bool SkinExists(string skinUserName, Weapon weapon, bool recursive = true)
-        {
-            //TODO: this whole method is awful
-            var skin = new Skin(skinUserName, weapon, false, 69, Conditions.FactoryNew);
-            var api = instance.scrapperList[0].GetUrl(skin);
-            try
-            {
-                instance.scrapperList[0].GetPrice(api);
-                return true;
-            }
-            catch
-            {
-                if (recursive)
-                {
-                    var skinName = skin.name;
-
-                    if (skinName.Contains(' '))
-                    {
-                        while (skinName.Contains(' '))
-                        {
-                            skinName = skinName.Replace(' ', '-');
-                        }
-
-                    }
-                    else if (skinName.Contains('-'))
-                    {
-                        while (skinName.Contains('-'))
-                        {
-                            skinName = skinName.Replace('-', ' ');
-                        }
-                    }
-
-                    return SkinExists(skinName, weapon, false);
-                }
-                else
-                {
-                    //TODO: don't throw up
-                    throw new Exception($"The Skin {skin.name} does not exist.");
-                }
-            }
-        }
-
         public static double[] GetPriceArray(List<Skin> skins)
         {
             return instance.scrapperList[0].GetPriceArray(skins);
