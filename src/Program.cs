@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using CSSkinScrapper.UI;
 
 namespace CSSkinScrapper
 {
@@ -16,25 +20,16 @@ namespace CSSkinScrapper
 
         static void ScopeToTriggerGC()
         {
-            bool newSkin = false;
-
             //Load user settings
-            JSONInterop jsonInterop = new JSONInterop();
+            JSONInterop jsonInterop = new();
             SaveFile saveFile = jsonInterop.Load().GetAwaiter().GetResult();
 
             //new skins?
-            if (saveFile.skinCount == 0)
-            {
-                NewSkin();
-            }
-            else
-            {
-                Console.WriteLine("Do you want to add new skins [n] or just scan for prices [s]?");
-                if (Console.ReadLine() == "n")
-                {
-                    NewSkin();
-                }
-            }
+            bool newSkin = UserInterface.AskNewSkin(saveFile);
+
+            //save savefile if new skins got added
+            if (newSkin)
+                jsonInterop.Save(saveFile).GetAwaiter().GetResult();
 
             //get newest prices
             Console.WriteLine("\nGetting Prices:");
@@ -43,18 +38,10 @@ namespace CSSkinScrapper
             //Write to excel
             Console.WriteLine("\nWriting to Excelsheet...");
             ExcelInterop exelInterop = new ExcelInterop(saveFile);
+            //TODO: just pass this bool into one excelinterop method
             if (newSkin)
                 exelInterop.SkinForm(false);
             exelInterop.WritePrices(prices);
-
-            void NewSkin()
-            {
-                var ui = new UserInterface();
-                ui.NewSkin(saveFile.skinList);
-                newSkin = true;
-                Console.WriteLine("\nSaving json file.");
-                jsonInterop.Save(saveFile).GetAwaiter().GetResult();
-            }
         }
     }
 }

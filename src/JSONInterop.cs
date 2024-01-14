@@ -25,6 +25,7 @@ namespace CSSkinScrapper
 
         public async Task Save(SaveFile objectToSave)
         {
+            Console.WriteLine("\nSaving json file.");
             await using FileStream saveFile = File.OpenWrite(jsonPath);
             await JsonSerializer.SerializeAsync(saveFile, objectToSave, serializerOptions);
             //TODO: #1 at top
