@@ -4,7 +4,7 @@ using System.Net.Http;
 
 namespace CSSkinScrapper.UI
 {
-    internal class NewSkinInterface : TechnicalUserInterface
+    internal class NewSkinInterface : TechnicalInterface
     {
         public void NewSkin(IList<Skin> skinList)
         {

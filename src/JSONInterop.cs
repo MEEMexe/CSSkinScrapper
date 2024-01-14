@@ -23,7 +23,17 @@ namespace CSSkinScrapper
             jsonPath = exeDirPath + "ScrapperSettings.json";
         }
 
-        public async Task Save(SaveFile objectToSave)
+        public SaveFile Load()
+        {
+            return LoadAsync().GetAwaiter().GetResult();
+        }
+
+        public void Save(SaveFile objectToSave)
+        {
+            SaveAsync(objectToSave).GetAwaiter().GetResult();
+        }
+
+        private async Task SaveAsync(SaveFile objectToSave)
         {
             Console.WriteLine("\nSaving json file.");
             await using FileStream saveFile = File.OpenWrite(jsonPath);
@@ -32,7 +42,7 @@ namespace CSSkinScrapper
             saveFile.Close();
         }
 
-        public async Task<SaveFile> Load()
+        private async Task<SaveFile> LoadAsync()
         {
             if (!File.Exists(jsonPath))
             {
@@ -59,7 +69,7 @@ namespace CSSkinScrapper
                 sr.Close();
                 SaveFile? s = JsonSerializer.Deserialize<SaveFile>(json, serializerOptions);
                 s.runCount++;
-                await Save(s);
+                await SaveAsync(s);
                 return s;
             }
         }

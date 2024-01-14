@@ -21,27 +21,24 @@ namespace CSSkinScrapper
         static void ScopeToTriggerGC()
         {
             //Load user settings
-            JSONInterop jsonInterop = new();
-            SaveFile saveFile = jsonInterop.Load().GetAwaiter().GetResult();
+            var jsonInterop = new JSONInterop();
+            var saveFile = jsonInterop.Load();
 
             //new skins?
             bool newSkin = UserInterface.AskNewSkin(saveFile);
 
             //save savefile if new skins got added
             if (newSkin)
-                jsonInterop.Save(saveFile).GetAwaiter().GetResult();
+                jsonInterop.Save(saveFile);
 
             //get newest prices
-            Console.WriteLine("\nGetting Prices:");
+            Console.WriteLine("\nGetting Prices:\n");
             double[] prices = SkinScrapper.GetPriceArray(saveFile.skinList);
 
             //Write to excel
             Console.WriteLine("\nWriting to Excelsheet...");
-            ExcelInterop exelInterop = new ExcelInterop(saveFile);
-            //TODO: just pass this bool into one excelinterop method
-            if (newSkin)
-                exelInterop.SkinForm(false);
-            exelInterop.WritePrices(prices);
+            var exelInterop = new ExcelInterop(saveFile);
+            exelInterop.WritePrices(prices, newSkin);
         }
     }
 }

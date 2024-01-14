@@ -37,8 +37,11 @@ namespace CSSkinScrapper
             wr = workSheet.Cells[1, 1];
         }
 
-        public void WritePrices(double[] skinPriceArray)
+        public void WritePrices(double[] skinPriceArray, bool newSkins)
         {
+            if (newSkins)
+                SkinForm(false);
+
             int colum = 3 * saveFile.runCount + 7;
 
             //write current prices in "current" chart
