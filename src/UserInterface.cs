@@ -62,8 +62,8 @@ namespace CSSkinScrapper
             try
             {
                 // Start reading from the console
-                Console.WriteLine("Do you want to add new Skins [y] or just scan prices [n]?");
-                Console.WriteLine($"Automatically scanning in {waitTime} seconds...");
+                Console.WriteLine("\nDo you want to add new Skins [y] or just scan prices [n]?");
+                Console.WriteLine($"\nAutomatically scanning in {waitTime} seconds...");
                 var key = Console.ReadKey();
                 read = true;
                 if (key.KeyChar == 'y')

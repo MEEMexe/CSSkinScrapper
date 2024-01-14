@@ -35,12 +35,14 @@ namespace CSSkinScrapper.UI
 
         protected int IntUiSelector(int max)
         {
-            string? input = Console.ReadLine();
-            bool success = int.TryParse(input, out int value);
+            var input = Console.ReadKey();
+            string key = "";
+            key += input.KeyChar;
+            bool success = int.TryParse(key, out int value);
 
             if (!success | value < 0 | value > max)
             {
-                Console.WriteLine("Enter one of the numbers above:");
+                Console.WriteLine(" Enter one of the numbers above:");
                 return IntUiSelector(max);
             }
 
@@ -49,8 +51,10 @@ namespace CSSkinScrapper.UI
 
         protected bool BoolUiSelector()
         {
-            Console.WriteLine("Type [y] for yes or [n] for no.");
-            string? input = Console.ReadLine();
+            Console.WriteLine(" Type [y] for yes or [n] for no.");
+            var rawinput = Console.ReadKey();
+            string input = "";
+            input += rawinput.KeyChar;
 
             if (input != "y" && input != "n")
             {

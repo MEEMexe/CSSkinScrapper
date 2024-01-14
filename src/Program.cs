@@ -27,7 +27,7 @@ namespace CSSkinScrapper
                 jsonInterop.Save(saveFile);
 
             //get newest prices
-            Console.WriteLine("\nGetting Prices:\n");
+            Console.WriteLine("Getting Prices:\n");
             double[] prices = SkinScrapper.GetPriceArray(saveFile.skinList);
 
             //Write to excel

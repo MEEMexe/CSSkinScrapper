@@ -39,7 +39,6 @@ namespace CSSkinScrapper
 
         private async Task SaveAsync(SaveFile objectToSave)
         {
-            Console.WriteLine("\nSaving json file.");
             await using FileStream saveFile = File.OpenWrite(jsonPath);
             await JsonSerializer.SerializeAsync(saveFile, objectToSave, serializerOptions);
             //TODO: #1 at top
@@ -50,7 +49,7 @@ namespace CSSkinScrapper
         {
             if (!File.Exists(jsonPath))
             {
-                Console.WriteLine("Creating new save File.\n");
+                Console.WriteLine("Creating new save File...");
 
                 SaveFile newSave = new SaveFile()
                 {
@@ -65,7 +64,7 @@ namespace CSSkinScrapper
             }
             else
             {
-                Console.WriteLine("Loading save File.\n");
+                Console.WriteLine("Loading save File...");
 
                 StreamReader sr = new StreamReader(jsonPath);
                 string json = sr.ReadToEnd();
