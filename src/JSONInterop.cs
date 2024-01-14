@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 //#1 read summary from method below (FileStream.Close()) -> so call saveFile.Dispose ?
@@ -10,7 +11,11 @@ namespace CSSkinScrapper
 {
     internal class JSONInterop
     {
-        private static JsonSerializerOptions serializerOptions = new JsonSerializerOptions { WriteIndented = true };
+        private static JsonSerializerOptions serializerOptions = new JsonSerializerOptions
+        { 
+            WriteIndented = true,
+            Converters = { new JsonStringEnumConverter() }
+        };
         
         private string exeDirPath;
         private string jsonPath;
