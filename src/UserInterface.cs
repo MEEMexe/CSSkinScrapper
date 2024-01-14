@@ -65,6 +65,7 @@ namespace CSSkinScrapper
                 Console.WriteLine("Do you want to add new Skins [y] or just scan prices [n]?");
                 Console.WriteLine($"Automatically scanning in {waitTime} seconds...");
                 var key = Console.ReadKey();
+                read = true;
                 if (key.KeyChar == 'y')
                 {
                     Console.WriteLine("Adding new skin.");
@@ -76,11 +77,7 @@ namespace CSSkinScrapper
                 }
             }
             // Handle the exception when the operation is canceled
-            //catch (InvalidOperationException)
-            //{
-            //    Console.WriteLine("Operation canceled");
-            //}
-            catch (OperationCanceledException)
+            catch (InvalidOperationException)
             {
                 Console.WriteLine("Just scanning for prices");
                 return false;
