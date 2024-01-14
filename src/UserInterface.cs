@@ -1,13 +1,12 @@
 ﻿//credits: https://stackoverflow.com/a/58475263
 
+using CSSkinScrapper.UI;
+using CSSkinScrapper.Interop;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace CSSkinScrapper.UI
+namespace CSSkinScrapper
 {
     internal class UserInterface
     {
@@ -39,10 +38,10 @@ namespace CSSkinScrapper.UI
         private const int STD_INPUT_HANDLE = -10;
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern IntPtr GetStdHandle(int nStdHandle);
+        private static extern nint GetStdHandle(int nStdHandle);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern bool CancelIoEx(IntPtr handle, IntPtr lpOverlapped);
+        private static extern bool CancelIoEx(nint handle, nint lpOverlapped);
 
         private static bool WaitForInput()
         {
@@ -56,7 +55,7 @@ namespace CSSkinScrapper.UI
                 {
                     // Timeout => cancel the console read
                     var handle = GetStdHandle(STD_INPUT_HANDLE);
-                    CancelIoEx(handle, IntPtr.Zero);
+                    CancelIoEx(handle, nint.Zero);
                 }
             });
 

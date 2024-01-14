@@ -1,4 +1,5 @@
-﻿using Range = Microsoft.Office.Interop.Excel.Range;
+﻿using CSSkinScrapper.Interop;
+using Range = Microsoft.Office.Interop.Excel.Range;
 using Microsoft.Office.Interop.Excel;
 using System.Drawing;
 using System.IO;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CSSkinScrapper.UI
 {
-    internal class TechnicalInterface
+    internal abstract class TechnicalInterface
     {
         //TODO: share this between this and SkinPortImpl. -> start one async method at start and check if its completed if result is needed
         protected string completeMarket

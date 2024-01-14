@@ -1,9 +1,8 @@
-﻿using System;
+﻿using CSSkinScrapper.Interop;
+using System;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
 //#1 read summary from method below (FileStream.Close()) -> so call saveFile.Dispose ?
 
@@ -72,26 +71,6 @@ namespace CSSkinScrapper
                 await SaveAsync(s);
                 return s;
             }
-        }
-    }
-
-    public class SaveFile
-    {
-        [JsonInclude]
-        public int runCount;
-        [JsonInclude]
-        public string filePath;
-        [JsonInclude]
-        public List<Skin> skinList { get; private set; }
-
-        [JsonIgnore]
-        public int skinCount => skinList.Count;
-
-        public SaveFile()
-        {
-            runCount = 0;
-            filePath = "";
-            skinList = new List<Skin>();
         }
     }
 }

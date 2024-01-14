@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSSkinScrapper
+namespace CSSkinScrapper.Interop
 {
     public enum Conditions
     {

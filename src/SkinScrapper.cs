@@ -1,6 +1,7 @@
 ﻿using CSSkinScrapper.ScrapperImplemantations;
 using System.Collections.Generic;
 using System;
+using CSSkinScrapper.Interop;
 
 namespace CSSkinScrapper
 {

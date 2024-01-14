@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.Json.Serialization;
 
-namespace CSSkinScrapper
+namespace CSSkinScrapper.Interop
 {
     public class Skin : IFormattable
     {
