@@ -89,14 +89,9 @@ namespace CSSkinScrapper.ScrapperImplemantations
             return price;
         }
 
-        private static string CleanWhiteSpaces(ref string toClean)
+        private static void CleanWhiteSpaces(ref string toClean)
         {
-            while (toClean.Contains(" "))
-            {
-                toClean = toClean.Replace(" ", "%20");
-            }
-
-            return toClean;
+            toClean = toClean.Replace(" ", "%20");
         }
     }
 }
