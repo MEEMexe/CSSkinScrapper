@@ -1,5 +1,7 @@
 ﻿using CSSkinScrapper.ScrapperImplemantations;
 using System.Collections.Generic;
+using System;
+using CSSkinScrapper.Interop;
 
 namespace CSSkinScrapper
 {
@@ -14,6 +16,13 @@ namespace CSSkinScrapper
             scrapperList.Add(new Steam_Scrapper());
         }
 
+        public static double[] GetPriceArray(List<Skin> skins)
+        {
+            return instance.scrapperList[0].GetPriceArray(skins);
+
+            instance.GetPriceArrays(skins);
+        }
+
         private double[] GetPriceArrays(List<Skin> skins)
         {
             foreach (var scrapper in scrapperList)
@@ -22,13 +31,6 @@ namespace CSSkinScrapper
             }
 
             return null;
-        }
-
-        public static double[] GetPriceArray(List<Skin> skins)
-        {
-            return instance.scrapperList[0].GetPriceArray(skins);
-
-            instance.GetPriceArrays(skins);
         }
     }
 }

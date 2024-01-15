@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSSkinScrapper
+namespace CSSkinScrapper.Interop
 {
     public enum Conditions
     {
@@ -66,6 +66,8 @@ namespace CSSkinScrapper
 
     public class SkinStrings
     {
+        public static readonly string[] defaultWeapons = new SkinStrings().weapons;
+
         public string[] conditions =
         {
             "Factory New",

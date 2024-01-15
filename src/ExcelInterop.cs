@@ -1,4 +1,5 @@
-﻿using Range = Microsoft.Office.Interop.Excel.Range;
+﻿using CSSkinScrapper.Interop;
+using Range = Microsoft.Office.Interop.Excel.Range;
 using Microsoft.Office.Interop.Excel;
 using System.Drawing;
 using System.IO;
@@ -37,8 +38,11 @@ namespace CSSkinScrapper
             wr = workSheet.Cells[1, 1];
         }
 
-        public void WritePrices(double[] skinPriceArray)
+        public void WritePrices(double[] skinPriceArray, bool newSkins)
         {
+            if (newSkins)
+                SkinForm(false);
+
             int colum = 3 * saveFile.runCount + 7;
 
             //write current prices in "current" chart
