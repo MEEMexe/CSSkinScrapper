@@ -1,5 +1,7 @@
 ﻿using CSSkinScrapper.ScrapperImplemantations;
 using System.Collections.Generic;
+using System;
+using CSSkinScrapper.Interop;
 
 namespace CSSkinScrapper
 {
@@ -16,8 +18,19 @@ namespace CSSkinScrapper
 
         public static double[] GetPriceArray(List<Skin> skins)
         {
-            //TODO: foreach in scrapperList when ExcelInterop is implemented
             return instance.scrapperList[0].GetPriceArray(skins);
+
+            instance.GetPriceArrays(skins);
+        }
+
+        private double[] GetPriceArrays(List<Skin> skins)
+        {
+            foreach (var scrapper in scrapperList)
+            {
+                
+            }
+
+            return null;
         }
     }
 }
