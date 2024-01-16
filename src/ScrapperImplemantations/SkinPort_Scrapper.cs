@@ -4,28 +4,29 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using CSSkinScrapper.Interop;
 
 namespace CSSkinScrapper.ScrapperImplemantations
 {
     internal class SkinPort_Scrapper : ScrapperBase
     {
-        private static string baseURL = "https://api.skinport.com/v1/items?app_id=730&currency=EUR&tradable=0";
+        protected override string baseUrl => "https://api.skinport.com/v1/items?app_id=730&currency=EUR&tradable=0";
 
         private string completeMarket;
 
-        internal SkinPort_Scrapper() : base(baseURL)
+        internal SkinPort_Scrapper()
         {
             HttpResponseMessage response = GetResponse("");
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new BadRequestException();
+                throw new Exception();
             }
 
             completeMarket = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
         }
 
-        public override double GetPrice(Skin skin)
+        public override double GetPrice(string skin)
         {
             throw new NotImplementedException();
         }
