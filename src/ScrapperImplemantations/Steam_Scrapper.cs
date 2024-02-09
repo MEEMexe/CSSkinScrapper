@@ -31,7 +31,7 @@ namespace CSSkinScrapper.ScrapperImplemantations
 
         public override string GetUrl(Skin skin)
         {
-            string apiSkin = string.Empty;
+            string apiSkin = baseUrl;
 
             if (skin.statTrak)
             {
@@ -47,7 +47,7 @@ namespace CSSkinScrapper.ScrapperImplemantations
             return apiSkin;
         }
 
-        public override double[] GetPriceArray(List<Skin> skins)
+        public override async Task<double[]> GetPriceArray(List<Skin> skins)
         {
             int skinCount = skins.Count;
             double[] priceArray = new double[skinCount];
@@ -62,7 +62,7 @@ namespace CSSkinScrapper.ScrapperImplemantations
                 string form = "\t";
                 if (!skins[i].statTrak)
                     form += "\t";
-
+                
                 Console.WriteLine("Steam:\t" + skins[i].ToString(null, null) + form + price);
             }
 
