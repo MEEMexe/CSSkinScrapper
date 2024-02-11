@@ -53,7 +53,7 @@ namespace CSSkinScrapper.ScrapperImplemantations
             throw new NotImplementedException();
         }
 
-        public override double[] GetPriceArray(List<Skin> skinList)
+        public override Task<double[]> GetPriceArray(List<Skin> skinList)
         {
             throw new NotImplementedException();
         }

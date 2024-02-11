@@ -43,7 +43,7 @@ namespace CSSkinScrapper
             if (newSkins)
                 SkinForm(false);
 
-            int colum = 3 * saveFile.runCount + 7;
+            int colum = 5 * saveFile.runCount + 12;
 
             //write current prices in "current" chart
             WriteSinglePriceArray(skinPriceArray, 7);
@@ -57,7 +57,7 @@ namespace CSSkinScrapper
         {
             if (!newFile)
             {
-                int row = saveFile.skinCount + 5;
+                int row = saveFile.skinCount + 6;
                 ClearCell(row, 2);
                 ClearCell(row, 4);
                 ClearCell(row, 7);
@@ -71,21 +71,21 @@ namespace CSSkinScrapper
 
             for (int i = 0; i < skinCount; i++)
             {
-                wr = workSheet.Cells[i + 4, 2];
+                wr = workSheet.Cells[i + 5, 2];
                 wr.Value = saveFile.skinList[i].name;
-                wr = workSheet.Cells[i + 4, 4];
+                wr = workSheet.Cells[i + 5, 4];
                 double d = saveFile.skinList[i].buyPrice;
                 wr.Value = d;
                 totalPrice += d;
             }
 
             //format names
-            wr = workSheet.get_Range("B4", "C" + (skinCount + 3));
+            wr = workSheet.get_Range("B5", "C" + (skinCount + 4));
             wr.Font.Size = 16;
             wr.Interior.Color = ExcelColors.LightBlue;
 
             //format purchase price
-            wr = workSheet.get_Range("D4", "D" + (skinCount + 3));
+            wr = workSheet.get_Range("D5", "D" + (skinCount + 4));
             wr.Font.Size = 16;
             wr.Interior.Color = ExcelColors.LightYellow;
             wr.Font.Color = ExcelColors.DarkerYellow;
@@ -112,7 +112,7 @@ namespace CSSkinScrapper
             wr.Font.Size = 16;
             wr.Font.Bold = true;
             wr.Interior.Color = ExcelColors.DarkerBlue;
-            WinLooseHeadline(colum);
+            WriteChartHeader(colum);
         }
 
         private void WriteSinglePriceArray(double[] skinPriceArray, int colum)
@@ -127,13 +127,13 @@ namespace CSSkinScrapper
                 totalPrice += price;
                 relativePrice += win;
 
-                wr = workSheet.Cells[i + 4, colum];
+                wr = workSheet.Cells[i + 5, colum];
                 wr.Value = price;
                 wr.Font.Size = 16;
                 wr.Interior.Color = ExcelColors.LightYellow;
                 wr.Font.Color = ExcelColors.DarkerYellow;
 
-                wr = workSheet.Cells[i + 4, colum + 1];
+                wr = workSheet.Cells[i + 5, colum + 1];
                 wr.Value = win;
                 wr.Font.Size = 16;
                 ColorWinLoose(win);
@@ -192,17 +192,33 @@ namespace CSSkinScrapper
             wr.Font.Bold = true;
             wr.Interior.Color = ExcelColors.DarkerBlue;
 
-            WinLooseHeadline(7);
+            WriteChartHeader(7);
+        }
+
+        private void WriteChartHeader(int colum)
+        {
+            wr = workSheet.Cells[3, colum];
+            wr.Value = "Steam:";
+            wr.Font.Size = 16;
+            wr.Interior.Color = ExcelColors.DarkerBlue;
+
+            wr = workSheet.Cells[3, colum + 2];
+            wr.Value = "SkinPort:";
+            wr.Font.Size = 16;
+            wr.Interior.Color = ExcelColors.DarkerBlue;
+
+            WinLooseHeadline(colum);
+            WinLooseHeadline(colum + 2);
         }
 
         private void WinLooseHeadline(int colum)
         {
-            wr = workSheet.Cells[3, colum];
+            wr = workSheet.Cells[4, colum];
             wr.Value = "Preis:";
             wr.Font.Size = 14;
             wr.Interior.Color = ExcelColors.LightBlue;
 
-            wr = workSheet.Cells[3, colum + 1];
+            wr = workSheet.Cells[4, colum + 1];
             wr.Value = "Rendite:";
             wr.Font.Size = 14;
             wr.Interior.Color = ExcelColors.LightBlue;
