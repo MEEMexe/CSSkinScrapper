@@ -79,7 +79,7 @@ namespace CSSkinScrapper.ScrapperImplemantations
             }
 
             string responseString = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-            int i = responseString.IndexOf("lowest_price");
+            int i = responseString.IndexOf("median_price"); //sometimes a weapon dosn't have a lowest/highest property on steam for whatever reason
             string priceString = responseString.Substring(i + 15, 4);
             priceString = priceString.Replace("-", "0");
 
