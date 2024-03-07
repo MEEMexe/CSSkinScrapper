@@ -39,14 +39,21 @@ namespace CSSkinScrapper
                 return true;
         }
 
-        private (double[] steam, double[]skinport) GetPriceArrays(List<Skin> skins)
+        private (double[] steam, double[] skinport) GetPriceArrays(List<Skin> skins)
         {
-            foreach (var scrapper in scrapperList)
+            var steam = new List<double>();
+            var skinport = new List<double>();
+
+            foreach (var skin in skins)
             {
-                
+                //TODO: pass list to getPrice method
+                //make getprice async
+                //start all asyncs for all markets/skins
+                //let the method itself add to list from above
+                //wait for all before this return
             }
 
-            return (null, null);
+            return (steam.ToArray(), skinport.ToArray());
         }
     }
 }

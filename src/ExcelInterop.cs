@@ -47,10 +47,12 @@ namespace CSSkinScrapper
 
             //write current prices in "current" chart
             WriteSinglePriceArray(skinPriceArray, 7);
+            WriteSinglePriceArray(skinPriceArray, 9);
 
             //write history
             WriteDate(colum);  
             WriteSinglePriceArray(skinPriceArray, colum);
+            WriteSinglePriceArray(skinPriceArray, colum + 2);
         }
 
         public void SkinForm(bool newFile)

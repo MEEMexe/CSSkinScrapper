@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using CSSkinScrapper.Interop;
 
@@ -36,31 +34,41 @@ namespace CSSkinScrapper.ScrapperImplemantations
 
         private string m_completeMarket = "";
 
-        internal SkinPort_Scrapper()
-        {
-            HttpResponseMessage response = GetResponse("");
-
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception();
-            }
-
-            m_completeMarket = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-        }
-
         public override double GetPrice(string skin)
         {
-            throw new NotImplementedException();
+            //get weapon search
+            var marketIndexBracet = completeMarket.IndexOf(skin) - 2;
+            var closingBracet = completeMarket.IndexOf("}", marketIndexBracet);
+            var singleWeaponEntry = completeMarket.Substring(marketIndexBracet, closingBracet - marketIndexBracet);
+
+            //get median price
+            var index = singleWeaponEntry.IndexOf("median_price");
+            var subs = singleWeaponEntry.Substring(index + 14, 5);
+
+            //parse
+            subs = subs.Replace('.', ',');
+            return double.Parse(subs);
         }
 
         public override Task<double[]> GetPriceArray(List<Skin> skinList)
         {
-            throw new NotImplementedException();
+            var priceList = new List<double>();
+            foreach (var skin in skinList)
+            {
+                priceList.Add(GetPrice(GetUrl(skin)));
+            }
+            return priceList.ToArray();
         }
 
         public override string GetUrl(Skin skin)
         {
-            throw new NotImplementedException();
+            //build search
+            string statTrak = "";
+            if (skin.statTrak)
+                statTrak = "StatTrak™ ";
+            var search = $"market_hash_name\":\"";
+            search += $"{statTrak}{weaponStrings.weapons[(int)skin.type]} | {skin.name} ({weaponStrings.conditions[(int)skin.condition]})\"";
+            return search;
         }
     }
 }
