@@ -1,65 +1,59 @@
-﻿using System;
-using System.Net.Http;
+﻿using CSSkinScrapper.ScrapperImplemantations;
 using System.Collections.Generic;
+using System;
+using CSSkinScrapper.Interop;
+using System.Net.Http;
 
 namespace CSSkinScrapper
 {
-    internal static class HttpClientExtension
-    {
-        public static HttpResponseMessage GetResponseMessage(this HttpClient client, string skinpath)
-        {
-            return client.GetAsync(client.BaseAddress + skinpath).GetAwaiter().GetResult();
-        }
-    }
-
     internal class SkinScrapper
     {
-        private static HttpClient client = new HttpClient
+        private static SkinScrapper instance { get; } = new SkinScrapper();
+
+        private List<ScrapperBase> scrapperList = new List<ScrapperBase>();
+
+        private SkinScrapper()
         {
-            BaseAddress = new Uri("http://steamcommunity.com/market/priceoverview/?currency=3&appid=730&market_hash_name=")
-        };
-
-        public static double[] GetPriceArray(List<string> skinNames, List<string> skinApiNames)
-        {
-            int skinCount = skinNames.Count;
-            double[] priceArray = new double[skinCount];
-
-            for (int i = 0; i < skinCount; i++)
-            {
-                string form = " price:\t";
-                string skinname = skinNames[i];
-                double price = GetPrice(skinApiNames[i]);
-
-                if (skinname.Length < 9)
-                    form += "\t";
-
-                priceArray[i] = price;
-
-                Console.WriteLine(skinname + form + price);
-            }
-
-            return priceArray;
+            scrapperList.Add(new Steam_Scrapper());
         }
 
-        public static double GetPrice(string skinpath)
+        public static double[] GetPriceArray(List<Skin> skins)
         {
-            HttpResponseMessage response = client.GetResponseMessage(skinpath);
+            return instance.scrapperList[0].GetPriceArray(skins).Result;
 
-            if (!response.IsSuccessStatusCode)
+            instance.GetPriceArrays(skins);
+        }
+
+        private static HttpClient? userClient;
+        public static bool SkinExists(Skin skin)
+        {
+            if (userClient is null)
+                userClient = new HttpClient();
+
+            string req = instance.scrapperList[0].GetUrl(skin);
+            var resp = userClient.GetAsync(req).Result;
+
+            if (!resp.IsSuccessStatusCode)
+                return false;
+            else
+                return true;
+        }
+
+        private (double[] steam, double[] skinport) GetPriceArrays(List<Skin> skins)
+        {
+            var steam = new List<double>();
+            var skinport = new List<double>();
+
+            foreach (var skin in skins)
             {
-                throw new Exception();
+                //TODO: pass list to getPrice method
+                //make getprice async
+                //start all asyncs for all markets/skins
+                //let the method itself add to list from above
+                //wait for all before this return
             }
 
-            string responseString = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-
-            int i = responseString.IndexOf("lowest_price");
-            string priceString = responseString.Substring(i + 15, 4);
-            priceString = priceString.Replace("-", "0");
-
-            double price = double.Parse(priceString) / 1.15 - 0.01;
-            price = Math.Round(price, 2);
-
-            return price;
+            return (steam.ToArray(), skinport.ToArray());
         }
     }
 }

@@ -1,63 +1,86 @@
-﻿using System;
+﻿//credits: https://stackoverflow.com/a/58475263
+
+using CSSkinScrapper.UI;
+using CSSkinScrapper.Interop;
+using System;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace CSSkinScrapper
 {
     internal class UserInterface
     {
-        public static void NewSkin(ref SaveFile saveFile, ref JSONInterop jsonInterop)
+        public static bool AskNewSkin(SaveFile saveFile)
         {
-            NewSkinRecursive(ref saveFile);
-            Console.WriteLine("\nSaving json file.");
-            jsonInterop.Save(saveFile).GetAwaiter().GetResult();
-        }
-
-        private static void NewSkinRecursive(ref SaveFile saveFile)
-        {
-            Tutorial();
-            Console.WriteLine("Enter SkinApiName:");
-            string? apiSkin = Console.ReadLine();
-
-            string startPhrase = "%20%7C%20";
-            string endPhrase = "%20%28";
-
-            int start = apiSkin.IndexOf(startPhrase);
-            int end = apiSkin.IndexOf(endPhrase);
-            int lenght = end - start - startPhrase.Length;
-
-            string skinName = apiSkin.Substring(start + startPhrase.Length, lenght);
-            skinName = skinName.Replace("%20", " ");
-
-            Console.WriteLine($"How much did the {skinName} cost?");
-            double price = double.Parse(Console.ReadLine());
-
-            saveFile.skinCount++;
-            saveFile.skinApiNames.Add(apiSkin);
-            saveFile.skinNames.Add(skinName);
-            saveFile.skinBuyPrice.Add(price);
-
-            Console.WriteLine("Do you want to add another skin? [y] yes/[n] no");
-            if (Console.ReadLine() == "y")
-                NewSkinRecursive(ref saveFile);
-        }
-
-        private static void Tutorial()
-        {
-            Console.WriteLine("Show how to add skins? [y] yes/[n] no");
-            string? yesno = Console.ReadLine();
-
-            if (yesno == "y")
+            if (CheckInput(saveFile))
             {
-                Console.WriteLine("How to add new skins:");
-                Console.WriteLine("Search your exact on the steam market.");
+                var ui = new NewSkinInterface();
+                ui.NewSkin(saveFile.skinList);
+                return true;
+            }
+            return false;
+        }
 
-                Console.WriteLine("Copy and paste the green highlighted part of the URL below.");
-                Console.WriteLine("Base URL:");
-                Console.Write("https://steamcommunity.com/market/listings/730/");
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("StatTrak%E2%84%A2%20AK-47%20%7C%20Nightwish%20%28Factory%20New%29");
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("To Copy:");
-                Console.WriteLine("StatTrak%E2%84%A2%20AK-47%20%7C%20Nightwish%20%28Factory%20New%29\n\n");
+        private static bool CheckInput(SaveFile saveFile)
+        {
+            if (saveFile.skinCount == 0)
+            {
+                return true;
+            }
+            else
+            {
+                var b = WaitForInput();
+                Console.Clear();
+                return b;
+            }
+        }
+
+        private const int STD_INPUT_HANDLE = -10;
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern nint GetStdHandle(int nStdHandle);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool CancelIoEx(nint handle, nint lpOverlapped);
+
+        private static bool WaitForInput()
+        {
+            // Start the timeout
+            var waitTime = 5;
+
+            var read = false;
+            Task.Delay(waitTime * 1000).ContinueWith(_ =>
+            {
+                if (!read)
+                {
+                    // Timeout => cancel the console read
+                    var handle = GetStdHandle(STD_INPUT_HANDLE);
+                    CancelIoEx(handle, nint.Zero);
+                }
+            });
+
+            try
+            {
+                // Start reading from the console
+                Console.WriteLine("\nDo you want to add new Skins [y] or just scan prices [n]?");
+                Console.WriteLine($"\nAutomatically scanning in {waitTime} seconds...");
+                var key = Console.ReadKey();
+                read = true;
+                if (key.KeyChar == 'y')
+                {
+                    Console.WriteLine("Adding new skin.");
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            // Handle the exception when the operation is canceled
+            catch (InvalidOperationException)
+            {
+                Console.WriteLine("Just scanning for prices");
+                return false;
             }
         }
     }
