@@ -1,11 +1,14 @@
-﻿namespace CSSkinScrapper
+﻿using CSSkinScrapper.FileInterop;
+
+namespace CSSkinScrapper
 {
     internal class Program
     {
         static void Main(string[] args)
         {
             Console.WriteLine("Hello, World!");
-            Console.ReadKey();
+
+            using var e = new SpreadSheetWriter();
         }
     }
 }

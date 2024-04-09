@@ -11,4 +11,9 @@
     <PackageReference Include="GemBox.Spreadsheet" Version="49.0.1655" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="src\UserInterface\" />
+    <Folder Include="src\ScrapperImplemantation\" />
+  </ItemGroup>
+
 </Project>
