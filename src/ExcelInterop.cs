@@ -13,7 +13,6 @@ namespace CSSkinScrapper
         private string path;
         private Workbook workBook;
         private Worksheet workSheet;
-        private Range wr;
 
         public ExcelInterop(SaveFile _saveFile)
         {
@@ -34,8 +33,6 @@ namespace CSSkinScrapper
                 StaticForm();
                 SkinForm(true);
             }
-
-            wr = workSheet.Cells[1, 1];
         }
 
         public void WritePrices(double[] skinPriceArray, bool newSkins)
@@ -73,47 +70,47 @@ namespace CSSkinScrapper
 
             for (int i = 0; i < skinCount; i++)
             {
-                wr = workSheet.Cells[i + 5, 2];
-                wr.Value = saveFile.skinList[i].name;
-                wr = workSheet.Cells[i + 5, 4];
+                var nameCells = workSheet.Cells[i + 5, 2];
+                nameCells.Value = saveFile.skinList[i].name;
+                nameCells = workSheet.Cells[i + 5, 4];
                 double d = saveFile.skinList[i].buyPrice;
-                wr.Value = d;
+                nameCells.Value = d;
                 totalPrice += d;
             }
 
             //format names
-            wr = workSheet.get_Range("B5", "C" + (skinCount + 4));
-            wr.Font.Size = 16;
-            wr.Interior.Color = ExcelColors.LightBlue;
+            var names = workSheet.get_Range("B5", "C" + (skinCount + 4));
+            names.Font.Size = 16;
+            names.Interior.Color = ExcelColors.LightBlue;
 
             //format purchase price
-            wr = workSheet.get_Range("D5", "D" + (skinCount + 4));
-            wr.Font.Size = 16;
-            wr.Interior.Color = ExcelColors.LightYellow;
-            wr.Font.Color = ExcelColors.DarkerYellow;
+            var prices = workSheet.get_Range("D5", "D" + (skinCount + 4));
+            prices.Font.Size = 16;
+            prices.Interior.Color = ExcelColors.LightYellow;
+            prices.Font.Color = ExcelColors.DarkerYellow;
 
             //write total purchase price
-            wr = workSheet.Cells[saveFile.skinCount + 6, 4];
-            wr.Value = totalPrice;
-            wr.Font.Size = 16;
-            wr.Interior.Color = ExcelColors.LightYellow;
-            wr.Font.Color = ExcelColors.DarkerYellow;
+            var total = workSheet.Cells[saveFile.skinCount + 6, 4];
+            total.Value = totalPrice;
+            total.Font.Size = 16;
+            total.Interior.Color = ExcelColors.LightYellow;
+            total.Font.Color = ExcelColors.DarkerYellow;
 
             //write SCHLUSS
-            wr = workSheet.Cells[saveFile.skinCount + 6, 2];
-            wr.Font.Size = 16;
-            wr.Interior.Color = ExcelColors.LightBlue;
-            wr.Value = "SCHLUSS:";
+            var schluss = workSheet.Cells[saveFile.skinCount + 6, 2];
+            schluss.Font.Size = 16;
+            schluss.Interior.Color = ExcelColors.LightBlue;
+            schluss.Value = "SCHLUSS:";
         }
 
         private void WriteDate(int colum)
         {
-            wr = workSheet.Cells[2, colum];
+            var dateCell = workSheet.Cells[2, colum];
             DateTime date = DateTime.Today;
-            wr.Value = date;
-            wr.Font.Size = 16;
-            wr.Font.Bold = true;
-            wr.Interior.Color = ExcelColors.DarkerBlue;
+            dateCell.Value = date;
+            dateCell.Font.Size = 16;
+            dateCell.Font.Bold = true;
+            dateCell.Interior.Color = ExcelColors.DarkerBlue;
             WriteChartHeader(colum);
         }
 
@@ -129,44 +126,44 @@ namespace CSSkinScrapper
                 totalPrice += price;
                 relativePrice += win;
 
-                wr = workSheet.Cells[i + 5, colum];
-                wr.Value = price;
-                wr.Font.Size = 16;
-                wr.Interior.Color = ExcelColors.LightYellow;
-                wr.Font.Color = ExcelColors.DarkerYellow;
+                var cPrice = workSheet.Cells[i + 5, colum];
+                cPrice.Value = price;
+                cPrice.Font.Size = 16;
+                cPrice.Interior.Color = ExcelColors.LightYellow;
+                cPrice.Font.Color = ExcelColors.DarkerYellow;
 
-                wr = workSheet.Cells[i + 5, colum + 1];
-                wr.Value = win;
-                wr.Font.Size = 16;
-                ColorWinLoose(win);
+                var dif = workSheet.Cells[i + 5, colum + 1];
+                dif.Value = win;
+                dif.Font.Size = 16;
+                ColorWinLoose(dif, win);
             }
 
             //write total price
-            wr = workSheet.Cells[saveFile.skinCount + 6, colum];
-            wr.Value = totalPrice;
-            wr.Font.Size = 16;
-            wr.Interior.Color = ExcelColors.LightYellow;
-            wr.Font.Color = ExcelColors.DarkerYellow;
+            var total = workSheet.Cells[saveFile.skinCount + 6, colum];
+            total.Value = totalPrice;
+            total.Font.Size = 16;
+            total.Interior.Color = ExcelColors.LightYellow;
+            total.Font.Color = ExcelColors.DarkerYellow;
 
             //write win/loose
-            wr = workSheet.Cells[saveFile.skinCount + 6, colum + 1];
-            wr.Value = relativePrice;
-            wr.Font.Size = 16;
-            ColorWinLoose(relativePrice);
+            var winLoose = workSheet.Cells[saveFile.skinCount + 6, colum + 1];
+            winLoose.Value = relativePrice;
+            winLoose.Font.Size = 16;
+            ColorWinLoose(winLoose, relativePrice);
         }
 
-        private bool ColorWinLoose(double value)
+        private bool ColorWinLoose(Range cell, double value)
         {
             if (value > 0)
             {
-                wr.Interior.Color = ExcelColors.LightGreen;
-                wr.Font.Color = ExcelColors.DarkerGreen;
+                cell.Interior.Color = ExcelColors.LightGreen;
+                cell.Font.Color = ExcelColors.DarkerGreen;
                 return true;
             }
             else
             {
-                wr.Interior.Color = ExcelColors.LightRed;
-                wr.Font.Color = ExcelColors.DarkerRed;
+                cell.Interior.Color = ExcelColors.LightRed;
+                cell.Font.Color = ExcelColors.DarkerRed;
                 return false;
             }
         }
@@ -174,40 +171,40 @@ namespace CSSkinScrapper
         private void StaticForm()
         {
             //Headlines
-            wr = workSheet.Cells[2, 2];
-            wr.Value = "Skins:";
-            wr.Font.Size = 16;
-            wr.Font.Bold = true;
-            wr.Interior.Color = ExcelColors.DarkerBlue;
+            var skinHead = workSheet.Cells[2, 2];
+            skinHead.Value = "Skins:";
+            skinHead.Font.Size = 16;
+            skinHead.Font.Bold = true;
+            skinHead.Interior.Color = ExcelColors.DarkerBlue;
 
-            wr = workSheet.Cells[2, 4];
-            wr.Value = "Kaufpreise:";
-            wr.Font.Size = 16;
-            wr.Font.Bold = true;
-            wr.Interior.Color = ExcelColors.DarkerBlue;
-            wr = workSheet.Cells[2, 5];
-            wr.Interior.Color = ExcelColors.DarkerBlue;
+            var buyHead = workSheet.Cells[2, 4];
+            buyHead.Value = "Kaufpreise:";
+            buyHead.Font.Size = 16;
+            buyHead.Font.Bold = true;
+            buyHead.Interior.Color = ExcelColors.DarkerBlue;
+            buyHead = workSheet.Cells[2, 5];
+            buyHead.Interior.Color = ExcelColors.DarkerBlue;
 
-            wr = workSheet.Cells[2, 7];
-            wr.Value = "Aktuell:";
-            wr.Font.Size = 16;
-            wr.Font.Bold = true;
-            wr.Interior.Color = ExcelColors.DarkerBlue;
+            var currentHead = workSheet.Cells[2, 7];
+            currentHead.Value = "Aktuell:";
+            currentHead.Font.Size = 16;
+            currentHead.Font.Bold = true;
+            currentHead.Interior.Color = ExcelColors.DarkerBlue;
 
             WriteChartHeader(7);
         }
 
         private void WriteChartHeader(int colum)
         {
-            wr = workSheet.Cells[3, colum];
-            wr.Value = "Steam:";
-            wr.Font.Size = 16;
-            wr.Interior.Color = ExcelColors.DarkerBlue;
+            var steamHead = workSheet.Cells[3, colum];
+            steamHead.Value = "Steam:";
+            steamHead.Font.Size = 16;
+            steamHead.Interior.Color = ExcelColors.DarkerBlue;
 
-            wr = workSheet.Cells[3, colum + 2];
-            wr.Value = "SkinPort:";
-            wr.Font.Size = 16;
-            wr.Interior.Color = ExcelColors.DarkerBlue;
+            var skinPortHead = workSheet.Cells[3, colum + 2];
+            skinPortHead.Value = "SkinPort:";
+            skinPortHead.Font.Size = 16;
+            skinPortHead.Interior.Color = ExcelColors.DarkerBlue;
 
             WinLooseHeadline(colum);
             WinLooseHeadline(colum + 2);
@@ -215,26 +212,26 @@ namespace CSSkinScrapper
 
         private void WinLooseHeadline(int colum)
         {
-            wr = workSheet.Cells[4, colum];
-            wr.Value = "Preis:";
-            wr.Font.Size = 14;
-            wr.Interior.Color = ExcelColors.LightBlue;
+            var buy = workSheet.Cells[4, colum];
+            buy.Value = "Preis:";
+            buy.Font.Size = 14;
+            buy.Interior.Color = ExcelColors.LightBlue;
 
-            wr = workSheet.Cells[4, colum + 1];
-            wr.Value = "Rendite:";
-            wr.Font.Size = 14;
-            wr.Interior.Color = ExcelColors.LightBlue;
+            var win = workSheet.Cells[4, colum + 1];
+            win.Value = "Rendite:";
+            win.Font.Size = 14;
+            win.Interior.Color = ExcelColors.LightBlue;
         }
 
         private void ClearCell(int x, int y)
         {
-            wr = workSheet.Cells[x, y];
-            wr.Value = "";
-            wr.Interior.Color = ExcelColors.White;
-            wr.Font.Color = ExcelColors.Black;
-            wr.Font.Size = 16;
-            wr.Cells.Borders.LineStyle = XlLineStyle.xlContinuous;
-            wr.Cells.Borders.Color = ExcelColors.Gray;
+            var toClear = workSheet.Cells[x, y];
+            toClear.Value = "";
+            toClear.Interior.Color = ExcelColors.White;
+            toClear.Font.Color = ExcelColors.Black;
+            toClear.Font.Size = 16;
+            toClear.Cells.Borders.LineStyle = XlLineStyle.xlContinuous;
+            toClear.Cells.Borders.Color = ExcelColors.Gray;
         }
 
         ~ExcelInterop()

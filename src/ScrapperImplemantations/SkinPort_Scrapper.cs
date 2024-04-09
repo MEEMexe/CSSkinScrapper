@@ -57,7 +57,7 @@ namespace CSSkinScrapper.ScrapperImplemantations
             {
                 priceList.Add(GetPrice(GetUrl(skin)));
             }
-            return priceList.ToArray();
+            return null; priceList.ToArray();
         }
 
         public override string GetUrl(Skin skin)
