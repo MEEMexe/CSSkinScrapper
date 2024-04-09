@@ -63,7 +63,7 @@ namespace CSSkinScrapper.ScrapperImplemantations
                 if (!skins[i].statTrak)
                     form += "\t";
                 
-                Console.WriteLine("Steam:\t" + skins[i].ToString(null, null) + form + price);
+                Console.WriteLine("Steam:\t" + skins[i].ToString() + form + price);
             }
 
             return priceArray;
