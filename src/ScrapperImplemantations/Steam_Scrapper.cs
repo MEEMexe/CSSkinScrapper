@@ -31,7 +31,7 @@ namespace CSSkinScrapper.ScrapperImplemantations
 
         public override string GetUrl(Skin skin)
         {
-            string apiSkin = string.Empty;
+            string apiSkin = baseUrl;
 
             if (skin.statTrak)
             {
@@ -47,7 +47,7 @@ namespace CSSkinScrapper.ScrapperImplemantations
             return apiSkin;
         }
 
-        public override double[] GetPriceArray(List<Skin> skins)
+        public override async Task<double[]> GetPriceArray(List<Skin> skins)
         {
             int skinCount = skins.Count;
             double[] priceArray = new double[skinCount];
@@ -62,8 +62,8 @@ namespace CSSkinScrapper.ScrapperImplemantations
                 string form = "\t";
                 if (!skins[i].statTrak)
                     form += "\t";
-
-                Console.WriteLine("Steam:\t" + skins[i].ToString(null, null) + form + price);
+                
+                Console.WriteLine("Steam:\t" + skins[i].ToString() + form + price);
             }
 
             return priceArray;
@@ -79,7 +79,7 @@ namespace CSSkinScrapper.ScrapperImplemantations
             }
 
             string responseString = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-            int i = responseString.IndexOf("lowest_price");
+            int i = responseString.IndexOf("median_price"); //sometimes a weapon dosn't have a lowest/highest property on steam for whatever reason
             string priceString = responseString.Substring(i + 15, 4);
             priceString = priceString.Replace("-", "0");
 

@@ -13,6 +13,7 @@ namespace CSSkinScrapper.UI
             Console.WriteLine("Do you want to add another skin?");
             if (BoolUiSelector())
                 NewSkin(skinList);
+            Console.Clear();
         }
 
         private Skin NewSkinUI()
@@ -99,8 +100,11 @@ namespace CSSkinScrapper.UI
                 skinName = skinName.Remove(i);
 
             //get random instance of this name
-            string toSearch = $"{SkinStrings.defaultWeapons[(int)weapon]} | {skinName} (Field-Tested)";
-            bool success = completeMarket.Contains(toSearch);
+            bool success;
+            {
+                var toSearch = new Skin(skinName, weapon, false, 69, Conditions.WellWorn);
+                success = SkinScrapper.SkinExists(toSearch);
+            }
 
             if (!success)
             {

@@ -9,30 +9,6 @@ namespace CSSkinScrapper.UI
 {
     internal abstract class TechnicalInterface
     {
-        //TODO: share this between this and SkinPortImpl. -> start one async method at start and check if its completed if result is needed
-        protected string completeMarket
-        {
-            get
-            {
-                if (m_completeMarket == "")
-                {
-                    using (var client = new HttpClient())
-                    {
-                        var response = client.GetAsync("https://api.skinport.com/v1/items?app_id=730&currency=EUR&tradable=0").GetAwaiter().GetResult();
-                        if (!response.IsSuccessStatusCode)
-                        {
-                            //TODO: dont throw up
-                            throw new Exception("Couldn't get the market from skinport.");
-                        }
-                        m_completeMarket = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                    }
-                }
-                return m_completeMarket;
-            }
-        }
-
-        private string m_completeMarket = "";
-
         protected int IntUiSelector(int max)
         {
             var input = Console.ReadKey();

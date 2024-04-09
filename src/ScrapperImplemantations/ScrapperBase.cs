@@ -1,6 +1,7 @@
 ﻿using System.Net.Http;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using CSSkinScrapper.Interop;
 
 namespace CSSkinScrapper.ScrapperImplemantations
@@ -22,11 +23,11 @@ namespace CSSkinScrapper.ScrapperImplemantations
 
         public abstract string GetUrl(Skin skin);
         public abstract double GetPrice(string apiSkin);
-        public abstract double[] GetPriceArray(List<Skin> skinList);
+        public abstract Task<double[]> GetPriceArray(List<Skin> skinList);
 
         protected HttpResponseMessage GetResponse(string skinpath)
         {
-            return client.GetAsync(client.BaseAddress + skinpath).GetAwaiter().GetResult();
+            return client.GetAsync(skinpath).GetAwaiter().GetResult();
         }
     }
 }

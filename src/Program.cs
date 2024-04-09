@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CSSkinScrapper.ScrapperImplemantations;
+using System;
 
 namespace CSSkinScrapper
 {

@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace CSSkinScrapper.Interop
 {
-    public class Skin : IFormattable
+    public class Skin
     {
         [JsonInclude]
         public string name;
@@ -17,7 +17,7 @@ namespace CSSkinScrapper.Interop
         public Conditions condition;
 
         [JsonIgnore]
-        public float currentPrice;
+        public float currentPrice;  //TODO: currently not used -> remove if so
 
         public Skin(string name, Weapon type, bool statTrak, double buyPrice, Conditions condition)
         {
@@ -28,7 +28,7 @@ namespace CSSkinScrapper.Interop
             this.type = type;
         }
 
-        public string ToString(string? format, IFormatProvider? formatProvider)
+        new public string ToString()
         {
             string target = string.Empty;
             if (statTrak)
