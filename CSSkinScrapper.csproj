@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <Folder Include="src\UserInterface\" />
-    <Folder Include="src\ScrapperImplemantation\" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
-﻿using GemBox.Spreadsheet;
+﻿using CSSkinScrapper.ScrapperImplemantation;
+using GemBox.Spreadsheet;
 
 namespace CSSkinScrapper.FileInterop
 {
@@ -44,16 +45,21 @@ namespace CSSkinScrapper.FileInterop
                 excelFile = new ExcelFile();
                 workSheet = excelFile.Worksheets.Add("Revenue calculations");
                 WriteHeaders();
+
                 Console.WriteLine("Spreadsheet created.");
             }
             else
             {
                 excelFile = ExcelFile.Load(odsFile);
                 workSheet = excelFile.Worksheets[0];
+
+                //this is how you could insert data after creation -> e.g. for adding skins later, adding whole markets later
+                //var e = workSheet.Cells.GetSubrangeRelative(6, 7, 1, 1);
+                //e.Insert(InsertShiftDirection.Right);
+                //e.Remove(RemoveShiftDirection.Left);
+
                 Console.WriteLine("Spreadsheet loaded.");
             }
-
-            WriteHeaders();
         }
 
         private void WriteHeaders()
