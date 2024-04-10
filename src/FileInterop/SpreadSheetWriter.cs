@@ -1,7 +1,10 @@
 ﻿namespace CSSkinScrapper.FileInterop
 {
-    public class SpreadSheetWriter : SpreadSheetFileCreator
+    public class SpreadSheetWriter : SpreadSheetCreator
     {
+        public void WritePriceArrays(double[][] priceArrays)
+        {
 
+        }
     }
 }

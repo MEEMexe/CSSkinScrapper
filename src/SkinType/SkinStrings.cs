@@ -1,66 +1,8 @@
 ﻿namespace CSSkinScrapper.SkinType
 {
-    public enum Conditions
+    public static class SkinStrings
     {
-        FactoryNew,
-        MinimalWear,
-        FieldTested,
-        WellWorn,
-        BattleScarred
-    }
-
-    public enum Weapon
-    {
-        //Pistols
-        DesertEagle,
-        R8Revolver,
-        DualBerettas,
-        FiveSeveN,
-        Glock18,
-        P2000,
-        USPS,
-        P250,
-        CZ75Auto,
-        Tec9,
-
-        //Shotguns
-        Mag7,
-        Nova,
-        SawedOff,
-        XM1014,
-
-        //SMGs
-        PPBizon,
-        MAC10,
-        MP7,
-        MP5SD,
-        MP9,
-        P90,
-        UMP45,
-
-        //Rifles
-        AK47,
-        AUG,
-        FAMAS,
-        GalilAR,
-        M4A4,
-        M4A1S,
-        SG553,
-
-        //LMGs
-        M249,
-        Negev,
-
-        //SniperRifles
-        AWP,
-        G3SG1,
-        SCAR20,
-        SSG08,
-    }
-
-    public class SkinStrings
-    {
-        public string[] conditions =
+        public static readonly string[] conditions =
         {
             "Factory New",
             "Minimal Wear",
@@ -69,7 +11,7 @@
             "Battle-Scarred",
         };
 
-        public List<List<string>> weapons =
+        public static readonly List<List<string>> weapons =
         [
             [
                 //Pistols

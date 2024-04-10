@@ -1,9 +1,10 @@
 ﻿using CSSkinScrapper.ScrapperImplemantation;
+using CSSkinScrapper.SkinType;
 using GemBox.Spreadsheet;
 
 namespace CSSkinScrapper.FileInterop
 {
-    public abstract class SpreadSheetFileCreator : IDisposable
+    public abstract class SpreadSheetCreator : IDisposable
     {
         private ExcelFile excelFile;
 
@@ -12,7 +13,7 @@ namespace CSSkinScrapper.FileInterop
         /// </summary>
         protected ExcelWorksheet workSheet { get; private set; }
 
-        public SpreadSheetFileCreator()
+        public List<Skin> Init()
         {
             //handle GemBox license
             SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
@@ -39,6 +40,7 @@ namespace CSSkinScrapper.FileInterop
             }
 
             //load/create spreadsheetFile
+            var skinList = new List<Skin>();
             string odsFile = Path.Combine(exeDir, "CSGO-Skins.xlsx");
             if (!File.Exists(odsFile))
             {
@@ -59,7 +61,9 @@ namespace CSSkinScrapper.FileInterop
                 //e.Remove(RemoveShiftDirection.Left);
 
                 Console.WriteLine("Spreadsheet loaded.");
+                //TODO: get skin from sheet and add to skinList
             }
+            return skinList;
         }
 
         private void WriteHeaders()

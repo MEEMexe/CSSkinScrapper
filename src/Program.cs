@@ -1,6 +1,7 @@
 ﻿using CSSkinScrapper.FileInterop;
 using CSSkinScrapper.ScrapperImplemantation;
 using CSSkinScrapper.SkinType;
+using CSSkinScrapper.UserInterface;
 
 namespace CSSkinScrapper
 {
@@ -9,13 +10,23 @@ namespace CSSkinScrapper
         static void Main(string[] args)
         {
             var scrapper = new SkinScrapper();
+            using var excelSheet = new SpreadSheetWriter();
+            var skinList = excelSheet.Init();
 
-            var list = new List<Skin>();
-            list.Add(new Skin() { type = "AK-47", condition = "Factory New", name = "Nightwish", statTrak = true });
-            list.Add(new Skin() { type = "Desert Eagle", condition = "Factory New", name = "Printstream", statTrak = true });
+            if (skinList.Count != 0)
+            {
+                if (UserInterfaceWaiter.AskNewSkin())
+                {
+                    new NewSkinInterface().NewSkin(skinList);
+                }
+            }
+            else
+            {
+                new NewSkinInterface().NewSkin(skinList);
+            }
 
-            var s = scrapper.StartScrapping(list);
-            Console.ReadKey();
+            var s = scrapper.StartScrapping(skinList);
+            excelSheet.WritePriceArrays(s);
         }
     }
 }
