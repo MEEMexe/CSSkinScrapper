@@ -43,7 +43,7 @@ namespace CSSkinScrapper.UserInterface
 
             var skin = new Skin(name, weapon, statTrak, price, condition);
 
-            Console.WriteLine($"Is the '{skin}' for {skin.buyPrice}€ correct?");
+            Console.WriteLine($"Is the '{skin.ToString()}' for {skin.buyPrice}€ correct?");
             if (!BoolUiSelector())
             {
                 //TODO: maybe don't restart from scratch and ask what information is wrong

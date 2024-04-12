@@ -55,13 +55,20 @@ namespace CSSkinScrapper.FileInterop
                 excelFile = ExcelFile.Load(odsFile);
                 workSheet = excelFile.Worksheets[0];
 
-                //this is how you could insert data after creation -> e.g. for adding skins later, adding whole markets later
-                //var e = workSheet.Cells.GetSubrangeRelative(6, 7, 1, 1);
-                //e.Insert(InsertShiftDirection.Right);
-                //e.Remove(RemoveShiftDirection.Left);
-
                 Console.WriteLine("Spreadsheet loaded.");
-                //TODO: get skin from sheet and add to skinList
+
+                //getting skinlist from spreadsheet
+                int count = 0;
+                while (true)
+                {
+                    var skin = workSheet.Cells[7 + count, 1];
+                    var price = double.Parse(workSheet.Cells[7 + count, 2].Value as string);
+                    var value = skin.Value as string;
+                    if (string.IsNullOrWhiteSpace(value) | value == "SCHLUSS:")
+                        break;
+                    skinList.Add(new Skin(value, price));
+                    count++;
+                }
             }
             return skinList;
         }
@@ -69,7 +76,7 @@ namespace CSSkinScrapper.FileInterop
         private void WriteHeaders()
         {
             int headerRow = 5;
-            int headerCol = 1;
+            int headerCol = 0;
             int headerSize = 300;
             int headerBold = 800;
             int valueBold = 450;
@@ -80,7 +87,7 @@ namespace CSSkinScrapper.FileInterop
             workSheet.Cells[1, 1].Style.Font.Italic = true;
 
             //skins table headline
-            FormatHeader(headerRow, headerCol, "Skins:", headerSize, true, headerBold, headerBackground);
+            FormatHeader(headerRow, headerCol + 1, "Skins:", headerSize, false, headerBold, headerBackground);
 
             //skins buyprice headline
             FormatHeader(headerRow, headerCol + 2, "Kaufpreise:", headerSize, true, headerBold, headerBackground);
@@ -91,7 +98,7 @@ namespace CSSkinScrapper.FileInterop
             FormatHeader(headerRow, headerCol + 7, "SkinPort:", headerSize, true, headerBold, headerBackground);
 
             //currentPrice/revenue
-            var range = workSheet.Cells.GetSubrangeRelative(headerRow + 1, headerCol + 5, 4, 1);
+            var range = workSheet.Cells.GetSubrangeRelative(headerRow + 1, headerCol + 4, 4, 1);
             range.Style.Font.Size = headerSize - 50;
             range.Style.Font.Weight = valueBold;
             range.Style.FillPattern.GradientColor1 = ExcelColors.LightBlue;
@@ -101,7 +108,7 @@ namespace CSSkinScrapper.FileInterop
             range[3].Value = "Rendite:";
 
             //TODO: look into Insert method from GemBox for adding new skins while spreadsheet already exists
-            //SCHLUSS
+            FormatHeader(headerRow + 4, headerCol + 1, "SCHLUSS:", headerSize, false, headerBold, ExcelColors.LightBlue);
         }
 
         //TODO: doubleCell bool is useless
@@ -128,21 +135,5 @@ namespace CSSkinScrapper.FileInterop
             //.ods also works fine, but can't be loaded by other programs except for the own "ExcelFile.Load" method.
             excelFile.Save("CSGO-Skins.xlsx");
         }
-    }
-
-    public static class ExcelColors
-    {
-        public static SpreadsheetColor White = SpreadsheetColor.FromArgb(255, 255, 255);
-        public static SpreadsheetColor Gray = SpreadsheetColor.FromArgb(208, 206, 206);
-        public static SpreadsheetColor Black = SpreadsheetColor.FromArgb(0, 0, 0);
-        public static SpreadsheetColor LightBlue = SpreadsheetColor.FromArgb(180, 198, 231);
-        public static SpreadsheetColor DarkerBlue = SpreadsheetColor.FromArgb(100, 149, 237);
-        public static SpreadsheetColor LightGreen = SpreadsheetColor.FromArgb(198, 239, 206);
-        public static SpreadsheetColor DarkerGreen = SpreadsheetColor.FromArgb(0, 97, 0);
-        public static SpreadsheetColor LightRed = SpreadsheetColor.FromArgb(255, 199, 206);
-        public static SpreadsheetColor DarkerRed = SpreadsheetColor.FromArgb(156, 0, 6);
-        public static SpreadsheetColor LightYellow = SpreadsheetColor.FromArgb(255, 235, 156);
-        public static SpreadsheetColor Yellow = SpreadsheetColor.FromArgb(255, 217, 102);
-        public static SpreadsheetColor DarkerYellow = SpreadsheetColor.FromArgb(156, 87, 0);
     }
 }

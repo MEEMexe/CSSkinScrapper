@@ -18,11 +18,13 @@ namespace CSSkinScrapper
                 if (UserInterfaceWaiter.AskNewSkin())
                 {
                     new NewSkinInterface().NewSkin(skinList);
+                    excelSheet.WriteNewSkins(skinList);
                 }
             }
             else
             {
                 new NewSkinInterface().NewSkin(skinList);
+                excelSheet.WriteNewSkins(skinList);
             }
 
             var s = scrapper.StartScrapping(skinList);
