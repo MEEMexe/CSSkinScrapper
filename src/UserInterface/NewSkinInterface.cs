@@ -7,10 +7,11 @@ namespace CSSkinScrapper.UserInterface
     {
         public void NewSkin(IList<Skin> skinList)
         {
-            skinList.Add(NewSkinUI());
-            Console.WriteLine("Do you want to add another skin?");
-            if (BoolUiSelector())
-                NewSkin(skinList);
+            skinList.Add(new Skin("Printstream", "Desert Eagle", true, 69, "Factory New"));
+            //skinList.Add(NewSkinUI());
+            //Console.WriteLine("Do you want to add another skin?");
+            //if (BoolUiSelector())
+            //    NewSkin(skinList);
             Console.Clear();
         }
 

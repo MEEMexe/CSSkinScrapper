@@ -19,6 +19,7 @@ namespace CSSkinScrapper.FileInterop
             SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
             SpreadsheetInfo.FreeLimitReached += (s, e) =>
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Wow, you've got to many skins for this program.");
                 Console.ReadKey();
                 throw new Exception("To many skins for Gembox.Spreadsheet free version.");
@@ -62,10 +63,14 @@ namespace CSSkinScrapper.FileInterop
                 while (true)
                 {
                     var skin = workSheet.Cells[7 + count, 1];
-                    var price = double.Parse(workSheet.Cells[7 + count, 2].Value as string);
                     var value = skin.Value as string;
                     if (string.IsNullOrWhiteSpace(value) | value == "SCHLUSS:")
                         break;
+                    var priceCell = workSheet.Cells[7 + count, 2];
+                    var priceString = "" + priceCell.Value;
+                    var priceType = priceCell.ValueType;
+                    var price = double.Parse(priceString);
+
                     skinList.Add(new Skin(value, price));
                     count++;
                 }
@@ -75,30 +80,34 @@ namespace CSSkinScrapper.FileInterop
 
         private void WriteHeaders()
         {
+            //some standard values
             int headerRow = 5;
-            int headerCol = 0;
+            int headerCol = 1;
             int headerSize = 300;
             int headerBold = 800;
             int valueBold = 450;
             var headerBackground = ExcelColors.DarkerBlue;
 
             //SkinScrapper headline
-            FormatHeader(1, 1, "SkinScrapper 2.0 - CounterStrike skin revenue calculator", 400, false, 1000);
-            workSheet.Cells[1, 1].Style.Font.Italic = true;
+            var headerCell = workSheet.Cells[1, 1];
+            headerCell.Value = "SkinScrapper 2.0 - CounterStrike skin revenue calculator";
+            headerCell.Style.Font.Italic = true;
+            headerCell.Style.Font.Size = 400;
+            headerCell.Style.Font.Weight = 1000;
 
             //skins table headline
-            FormatHeader(headerRow, headerCol + 1, "Skins:", headerSize, false, headerBold, headerBackground);
+            FormatHeader(headerRow, headerCol, "Skins:", headerSize, headerBold, headerBackground);
 
             //skins buyprice headline
-            FormatHeader(headerRow, headerCol + 2, "Kaufpreise:", headerSize, true, headerBold, headerBackground);
+            FormatHeader(headerRow, headerCol + 1, "Kaufpreise:", headerSize, headerBold, headerBackground);
 
             //current table
-            FormatHeader(headerRow - 1, headerCol + 5, "Aktuell:", headerSize, true, headerBold, headerBackground);
-            FormatHeader(headerRow, headerCol + 5, "Steam:", headerSize, true, headerBold, headerBackground);
-            FormatHeader(headerRow, headerCol + 7, "SkinPort:", headerSize, true, headerBold, headerBackground);
+            FormatHeader(headerRow - 1, headerCol + 3, "Aktuell:", headerSize, headerBold, headerBackground);
+            FormatHeader(headerRow, headerCol + 3, "Steam:", headerSize, headerBold, headerBackground);
+            FormatHeader(headerRow, headerCol + 5, "SkinPort:", headerSize, headerBold, headerBackground);
 
             //currentPrice/revenue
-            var range = workSheet.Cells.GetSubrangeRelative(headerRow + 1, headerCol + 4, 4, 1);
+            var range = workSheet.Cells.GetSubrangeRelative(headerRow + 1, headerCol + 3, 4, 1);
             range.Style.Font.Size = headerSize - 50;
             range.Style.Font.Weight = valueBold;
             range.Style.FillPattern.GradientColor1 = ExcelColors.LightBlue;
@@ -107,12 +116,12 @@ namespace CSSkinScrapper.FileInterop
             range[2].Value = "Preis:";
             range[3].Value = "Rendite:";
 
-            //TODO: look into Insert method from GemBox for adding new skins while spreadsheet already exists
-            FormatHeader(headerRow + 4, headerCol + 1, "SCHLUSS:", headerSize, false, headerBold, ExcelColors.LightBlue);
+            //schluss
+            FormatHeader(headerRow + 3, headerCol, "SCHLUSS:", headerSize, headerBold, ExcelColors.LightBlue);
         }
 
         //TODO: doubleCell bool is useless
-        protected void FormatHeader(int row, int column, string value, int fontSize, bool doubleCell, int boldness, SpreadsheetColor background = new SpreadsheetColor())
+        protected void FormatHeader(int row, int column, string value, int fontSize, int boldness, SpreadsheetColor background)
         {
             var cell = workSheet.Cells[row, column];
             cell.Value = value;
@@ -121,12 +130,8 @@ namespace CSSkinScrapper.FileInterop
             font.Size = fontSize;
             font.Weight = boldness;
 
-            if (!background.IsEmpty)
-            {
-                cell.Style.FillPattern.GradientColor1 = background;
-                if (doubleCell)
-                    workSheet.Cells[row, column + 1].Style.FillPattern.GradientColor1 = background;
-            }
+            cell.Style.FillPattern.GradientColor1 = background;
+            workSheet.Columns[column].AutoFit();
         }
 
         public void Dispose()
