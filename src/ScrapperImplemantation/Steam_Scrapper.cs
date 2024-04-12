@@ -42,14 +42,18 @@ namespace CSSkinScrapper.ScrapperImplemantation
             if (!response.IsSuccessStatusCode)
             {
                 //TODO: don't throw up
-                throw new Exception();
+                throw new Exception("API-Call failed.");
             }
 
             string responseString = await response.Content.ReadAsStringAsync();
             
             int i = responseString.IndexOf("median_price");     //sometimes a weapon dosn't have a lowest/highest property on steam for whatever reason
             if (i < 0)                                          //apperently weapons now sometimes only have a lowest price 
-                i = responseString.IndexOf("lowest_price");     
+                i = responseString.IndexOf("lowest_price");
+
+            if (i < 0)
+                throw new Exception("Failed to parse out price.");
+
             string priceString = responseString.Substring(i + 15, 4);
             priceString = priceString.Replace("-", "0");
 

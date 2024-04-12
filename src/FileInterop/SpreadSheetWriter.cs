@@ -7,7 +7,45 @@ namespace CSSkinScrapper.FileInterop
     {
         public void WritePriceArrays(double[][] priceArrays)
         {
+            for (int j = 0; j < priceArrays.Length; j++)
+            {
+                int skinCount = priceArrays[0].Length;
+                double revenue = 0;
+                double totalPrice = 0;
 
+                for (int i = 0; i < skinCount; i++)
+                {
+                    int sheetIndex = 7 + i;
+                    var priceCell = workSheet.Cells[sheetIndex, 4 + j * 2];
+                    priceCell.Style.Font.Size = 250;
+                    priceCell.Style.FillPattern.GradientColor1 = ExcelColors.LightYellow;
+                    priceCell.Style.Font.Color = ExcelColors.DarkerYellow;
+
+                    var currentPrice = priceArrays[j][i];
+                    var revenueCell = workSheet.Cells[sheetIndex, 5 + j * 2];
+                    var win = currentPrice - double.Parse("" + workSheet.Cells[sheetIndex, 2].Value);
+                    revenueCell.Style.Font.Size = 250;
+                    revenueCell.Value = win;
+                    priceCell.Value = currentPrice;
+                    totalPrice += currentPrice;
+                    revenue += win;
+
+                    ColorWinLoose(revenueCell, win);
+                }
+
+                var totalCell = workSheet.Cells[7 + skinCount + 1, 4 + j * 2];
+                totalCell.Value = totalPrice;
+                totalCell.Style.Font.Size = 250;
+                totalCell.Style.FillPattern.GradientColor1 = ExcelColors.LightYellow;
+                totalCell.Style.Font.Color = ExcelColors.DarkerYellow;
+                var totalWinCell = workSheet.Cells[7 + skinCount + 1, 5 + j * 2];
+                totalWinCell.Style.Font.Size = 250;
+                totalWinCell.Value = revenue;
+                ColorWinLoose(totalWinCell, revenue);
+
+                workSheet.Columns[4 + j * 2].AutoFit();
+                workSheet.Columns[5 + j * 2].AutoFit();
+            }
         }
 
         public void WriteNewSkins(List<Skin> skins)
@@ -49,6 +87,20 @@ namespace CSSkinScrapper.FileInterop
             }
 
             workSheet.Columns[1].AutoFit(0.6f);
+        }
+
+        private void ColorWinLoose(ExcelCell cell, double win)
+        {
+            if (win > 0)
+            {
+                cell.Style.FillPattern.GradientColor1 = ExcelColors.LightGreen;
+                cell.Style.Font.Color = ExcelColors.DarkerGreen;
+            }
+            else
+            {
+                cell.Style.FillPattern.GradientColor1 = ExcelColors.LightRed;
+                cell.Style.Font.Color = ExcelColors.DarkerRed;
+            }
         }
     }
 }
