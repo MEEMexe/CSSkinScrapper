@@ -67,7 +67,7 @@ namespace CSSkinScrapper.ScrapperImplemantation
             string priceString = responseString.Substring(i + 15, 4);
             priceString = priceString.Replace("-", "0");
 
-            double price = double.Parse(priceString) / 1.15 - 0.01;
+            double price = double.Parse(priceString) / 1.15 - 0.01; //market fee subtraction
             price = Math.Round(price, 2);
 
             //console print form
