@@ -1,4 +1,5 @@
 ﻿using CSSkinScrapper.SkinType;
+using System.Net;
 
 namespace CSSkinScrapper.ScrapperImplemantation
 {
@@ -41,8 +42,17 @@ namespace CSSkinScrapper.ScrapperImplemantation
 
             if (!response.IsSuccessStatusCode)
             {
-                //TODO: don't throw up
-                throw new Exception("API-Call failed.");
+                if (response.StatusCode == HttpStatusCode.TooManyRequests)
+                {
+                    Console.WriteLine("To many steam requests. Waiting for 2 seconds.");
+                    await Task.Delay(2 * 1000);
+                    return await GetPrice(skin);
+                }
+                else
+                {
+                    //TODO: don't throw up
+                    throw new Exception($"Steam-API-Call failed. Skin-URL: {skinUrl}");
+                }
             }
 
             string responseString = await response.Content.ReadAsStringAsync();

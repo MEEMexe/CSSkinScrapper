@@ -14,6 +14,7 @@ namespace CSSkinScrapper.ScrapperImplemantation
         public SkinScrapper()
         {
             actualScrappers.Add(new Steam_Scrapper());
+            actualScrappers.Add(new SkinPort_Scrapper());
         }
 
         public double[][] StartScrapping(List<Skin> skins)
