@@ -7,9 +7,16 @@ namespace CSSkinScrapper.UserInterface
     {
         public void NewSkin(IList<Skin> skinList)
         {
-            skinList.Add(new Skin("Printstream", "Desert Eagle", true, 69, "Factory New"));
-            skinList.Add(new Skin("Printstream", "Desert Eagle", true, 69000, "Factory New"));
-            skinList.Add(new Skin("Printstream", "Desert Eagle", true, 69000.69, "Factory New"));
+            skinList.Add(new Skin("Nightwish", "AK-47", false, 78.96, "Minimal Wear"));
+            skinList.Add(new Skin("In Living Color", "M4A4", false, 16.57, "Minimal Wear"));
+            skinList.Add(new Skin("Decimator", "M4A1-S", false, 22.08, "Field-Tested"));
+            skinList.Add(new Skin("Fever Dream", "AWP", false, 5.47, "Minimal Wear"));
+            skinList.Add(new Skin("Monster Mashup", "USP-S", false, 9.01, "Minimal Wear"));
+            skinList.Add(new Skin("Neo-Noir", "Glock-18", false, 24.78, "Minimal Wear"));
+            skinList.Add(new Skin("Disco Tech", "MAC-10", false, 6.64, "Minimal Wear"));
+            skinList.Add(new Skin("Neon Ply", "MP7", false, 2.68, "Factory New"));
+            skinList.Add(new Skin("Momentum", "UMP-45", false, 2.50, "Field-Tested"));
+            skinList.Add(new Skin("Vogue", "Glock-18", false, 2.50, "Field-Tested"));
             //skinList.Add(NewSkinUI());
             //Console.WriteLine("Do you want to add another skin?");
             //if (BoolUiSelector())

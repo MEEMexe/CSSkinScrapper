@@ -36,19 +36,26 @@ namespace CSSkinScrapper.ScrapperImplemantation
 
             //get median price
             var index = singleWeaponEntry.IndexOf("median_price");
-            var subs = singleWeaponEntry.Substring(index + 14, 5);
+            var priceString = singleWeaponEntry.Substring(index + 14, 5);
 
-            //parse
-            subs = subs.Replace('.', ',');
+            //price might be without decimal place
+            var cIndex = priceString.IndexOf(',');
+            if (cIndex != -1)
+            {
+                priceString = priceString.Substring(0, cIndex);
+            }
+
+            //double.Parse parses with comma instead of dot
+            priceString = priceString.Replace('.', ',');
 
             //console print form
             string form = "\t";
             if (!skin.statTrak)
                 form += "\t";
 
-            Console.WriteLine("SkinPort:\t" + skin.ToString() + form + subs);
+            Console.WriteLine("SkinPort:\t" + skin.ToString() + form + priceString);
 
-            return double.Parse(subs);
+            return double.Parse(priceString);
         }
 
         private string GetUrl(Skin skin)
