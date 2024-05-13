@@ -67,9 +67,7 @@ namespace CSSkinScrapper.FileInterop
                     if (string.IsNullOrWhiteSpace(value) | value == "SCHLUSS:")
                         break;
                     var priceCell = workSheet.Cells[7 + count, 2];
-                    var priceString = "" + priceCell.Value;
-                    var priceType = priceCell.ValueType;
-                    var price = double.Parse(priceString);
+                    var price = double.Parse("" + priceCell.Value);
 
                     skinList.Add(new Skin(value, price));
                     count++;
@@ -95,6 +93,7 @@ namespace CSSkinScrapper.FileInterop
             headerCell.Style.Font.Size = 400;
             headerCell.Style.Font.Weight = 1000;
 
+            //TODO: passing headerSize, headerBold, headerBackground is completly useless here
             //skins table headline
             FormatHeader(headerRow, headerCol, "Skins:", headerSize, headerBold, headerBackground);
 
@@ -120,7 +119,6 @@ namespace CSSkinScrapper.FileInterop
             FormatHeader(headerRow + 3, headerCol, "SCHLUSS:", headerSize, headerBold, ExcelColors.LightBlue);
         }
 
-        //TODO: doubleCell bool is useless
         protected void FormatHeader(int row, int column, string value, int fontSize, int boldness, SpreadsheetColor background)
         {
             var cell = workSheet.Cells[row, column];

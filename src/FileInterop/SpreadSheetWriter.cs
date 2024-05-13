@@ -30,7 +30,7 @@ namespace CSSkinScrapper.FileInterop
                     totalPrice += currentPrice;
                     revenue += win;
 
-                    ColorWinLoose(revenueCell, win);
+                    ColorWinLoose(revenueCell.Style, win);
                 }
 
                 var totalCell = workSheet.Cells[7 + skinCount + 1, 4 + j * 2];
@@ -41,7 +41,7 @@ namespace CSSkinScrapper.FileInterop
                 var totalWinCell = workSheet.Cells[7 + skinCount + 1, 5 + j * 2];
                 totalWinCell.Style.Font.Size = 250;
                 totalWinCell.Value = revenue;
-                ColorWinLoose(totalWinCell, revenue);
+                ColorWinLoose(totalWinCell.Style, revenue);
 
                 workSheet.Columns[4 + j * 2].AutoFit();
                 workSheet.Columns[5 + j * 2].AutoFit();
@@ -67,13 +67,9 @@ namespace CSSkinScrapper.FileInterop
             var e = workSheet.Cells.GetSubrangeRelative(start, 1, 1, toAdd);
             e.Insert(InsertShiftDirection.Down);
 
-            int maxLenght = 0;
-
             for (int i = 0; i < skins.Count; i++)
             {
                 var skinString = skins[i].ToString();
-                if (skinString.Length > maxLenght)
-                    maxLenght = skinString.Length;
                 var cCell = workSheet.Cells[7 + i, 1];
                 cCell.Value = skinString;
                 cCell.Style.FillPattern.GradientColor1 = ExcelColors.LightBlue;
@@ -89,17 +85,17 @@ namespace CSSkinScrapper.FileInterop
             workSheet.Columns[1].AutoFit(0.6f);
         }
 
-        private void ColorWinLoose(ExcelCell cell, double win)
+        private void ColorWinLoose(CellStyle cell, double win)
         {
             if (win > 0)
             {
-                cell.Style.FillPattern.GradientColor1 = ExcelColors.LightGreen;
-                cell.Style.Font.Color = ExcelColors.DarkerGreen;
+                cell.FillPattern.GradientColor1 = ExcelColors.LightGreen;
+                cell.Font.Color = ExcelColors.DarkerGreen;
             }
             else
             {
-                cell.Style.FillPattern.GradientColor1 = ExcelColors.LightRed;
-                cell.Style.Font.Color = ExcelColors.DarkerRed;
+                cell.FillPattern.GradientColor1 = ExcelColors.LightRed;
+                cell.Font.Color = ExcelColors.DarkerRed;
             }
         }
     }

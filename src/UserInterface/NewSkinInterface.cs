@@ -23,7 +23,7 @@ namespace CSSkinScrapper.UserInterface
             //    NewSkin(skinList);
             //Console.Clear();
         }
-
+        
         private Skin NewSkinUI()
         {
             Console.Clear();
